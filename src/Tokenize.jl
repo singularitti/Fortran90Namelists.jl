@@ -74,7 +74,7 @@ function Base.parse(tk::Tokenizer, line)
         elseif tk.char in ('+', '-')
             # Lookahead to check for IEEE value
             tk.characters, lookahead = itertools.tee(tk.characters)
-            ieee_val = join(takewhile(isalpha, lookahead), "")
+            ieee_val = join(takewhile(isletter, lookahead), "")
             if lowercase(ieee_val) in ('inf', 'infinity', 'nan')
                 word = tk.char * ieee_val
                 tk.characters = lookahead
@@ -92,7 +92,7 @@ function Base.parse(tk::Tokenizer, line)
                 word = '.' * frac
             else
                 word = '.'
-                while tk.char.isalpha()
+                while isletter(tk.char)
                     word *= tk.char
                     update_chars(tk)
                 end
