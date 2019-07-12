@@ -130,7 +130,36 @@ function parse_name(tk::Tokenizer, line)
 end  # function parse_name
 
 function parse_string(tk::Tokenizer)
+    word = ""
 
+    if isnothing(tk.prior_delim)  # FIXME:
+        delim = tk.prior_delim
+        tk.prior_delim = nothing
+    else
+        delim = tk.char
+        word *= tk.char
+        update_chars(tk)
+    end
+
+    while true
+        if tk.char == delim
+            # Check for escaped delimiters
+            update_chars(tk)
+            if tk.char == delim
+                word *= repeat(delim, 2)
+                update_chars(tk)
+            else
+                word *= delim && break
+            end
+        elseif tk.char == '\n'
+            tk.prior_delim = delim && break
+        else
+            word *= tk.char
+            update_chars(tk)
+        end
+    end
+
+    return word
 end  # function parse_string
 
 """
