@@ -134,7 +134,40 @@ function parse_string(tk::Tokenizer)
 end  # function parse_string
 
 function parse_numeric(tk::Tokenizer)
+    word = ""
+    frac = false
 
+    if tk.char == '-'
+        word *= tk.char
+        update_chars(tk)
+    end
+
+    while isdigit(tk.char) || (tk.char == '.' && !frac)
+        # Only allow one decimal point
+        if tk.char == '.'
+            frac = true
+        end
+        word *= tk.char
+        update_chars(tk)
+    end
+
+    # Check for float exponent
+    if occursin(tk.char, "eEdD")
+        word *= tk.char
+        update_chars(tk)
+    end
+
+    if occursin(tk.char, "+-")
+        word *= tk.char
+        update_chars(tk)
+    end
+
+    while isdigit(self.char)
+        word *= tk.char
+        update_chars(tk)
+    end
+
+    return word
 end  # function parse_numeric
 
 isalnum(c) = isletter(c) || isnumeric(c)
