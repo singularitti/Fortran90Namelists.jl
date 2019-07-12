@@ -129,6 +129,11 @@ function parse_name(tk::Tokenizer, line)
     return word
 end  # function parse_name
 
+"""
+    parse_string(tk::Tokenizer)
+
+Tokenize a Fortran string.
+"""
 function parse_string(tk::Tokenizer)
     word = ""
 
