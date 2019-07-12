@@ -1,0 +1,13 @@
+name = "Fotran90Namelist"
+uuid = "71cb2908-a46b-11e9-196d-c1ed44f93542"
+authors = ["Qi Zhang <singularitti@outlook.com>"]
+version = "0.1.0"
+
+[compat]
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
