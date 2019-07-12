@@ -113,7 +113,19 @@ function Base.parse(tk::Tokenizer, line)
 end  # function Base.parse
 
 function parse_name(tk::Tokenizer, line)
+    endindex = tk.idx
+    for char in line[tk.idx:end]
+        !isalnum(char) && !occursin(char, "\'\"_") && break
+        endindex += 1
+    end
 
+    word = line[tk.idx:end]
+
+    tk.idx = endindex - 1
+    # Update iterator, minus first character which was already read
+    tk.characters = itertools.islice(tk.characters, length(word) - 1, nothing)
+    update_chars(tk)
+    return word
 end  # function parse_name
 
 function parse_string(tk::Tokenizer)
@@ -123,5 +135,7 @@ end  # function parse_string
 function parse_numeric(tk::Tokenizer)
 
 end  # function parse_numeric
+
+isalnum(c) = isletter(c) || isnumeric(c)
 
 end
