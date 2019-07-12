@@ -133,6 +133,11 @@ function parse_string(tk::Tokenizer)
 
 end  # function parse_string
 
+"""
+    parse_numeric(tk::Tokenizer)
+
+Tokenize a Fortran numerical value.
+"""
 function parse_numeric(tk::Tokenizer)
     word = ""
     frac = false
