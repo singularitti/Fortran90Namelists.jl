@@ -167,7 +167,7 @@ function parse_numeric(tk::Tokenizer)
         update_chars(tk)
     end
 
-    while isdigit(self.char)
+    while isdigit(tk.char)
         word *= tk.char
         update_chars(tk)
     end
