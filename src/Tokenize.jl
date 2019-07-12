@@ -14,6 +14,12 @@ module Tokenize
 using IterTools: takewhile
 using Parameters: @with_kw
 
+export Tokenizer,
+    update_chars,
+    parse_name,
+    parse_string,
+    parse_numeric
+
 const SPECIAL_CHARS = " =+-*/\\()[]{},.:;!\"%&~<>?\'`|$\#@"
 const LEXICAL_TOKENS = "=+-*/()[],.:;%&<>"
 const PUNCTUATION = "=+-*/\\()[]{},:;%&~<>?`|$\#@"
