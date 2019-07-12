@@ -110,6 +110,7 @@ function Base.parse(tk::Tokenizer, line)
         end
         push!(tokens, word)
     end  # while loop
+    return tokens
 end  # function Base.parse
 
 function parse_name(tk::Tokenizer, line)
