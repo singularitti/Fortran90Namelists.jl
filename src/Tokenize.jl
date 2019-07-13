@@ -11,6 +11,7 @@ julia>
 """
 module Tokenize
 
+using DataStructures: Deque
 using IterTools: takewhile
 using Parameters: @with_kw
 
@@ -73,7 +74,7 @@ function Base.parse(tk::Tokenizer, line)
             word = parse_name(tk, line)
         elseif tk.char in ('+', '-')
             # Lookahead to check for IEEE value
-            tk.characters, lookahead = itertools.tee(tk.characters)  # FIXME:
+            tk.characters, lookahead = tee(tk.characters)  # FIXME:
             ieee_val = join(takewhile(isletter, lookahead), "")
             if lowercase(ieee_val) in ('inf', 'infinity', 'nan')
                 word = tk.char * ieee_val
@@ -210,5 +211,24 @@ function parse_numeric(tk::Tokenizer)
 end  # function parse_numeric
 
 isalnum(c) = isletter(c) || isnumeric(c)
+
+function tee(iterable, n::Int =2)
+    deques = [Deque() for i in range(n)]
+    function gen(mydeque)
+        while true
+            if !isempty(mydeque)             # when the local deque is empty
+                try:
+                    newval, state = iterate(iterable)   # fetch a new value and
+                    return
+                for d in deques        # load it to all the deques
+                    push!(d, newval)
+                end
+            end
+            yield popfirst!(mydeque)
+            end
+        end
+    end  # function gen
+    return tuple(gen(d) for d in deques)
+end  # function tee
 
 end
