@@ -191,14 +191,15 @@ function parse_numeric(tk::Tokenizer)
     frac = false
 
     if tk.char == '-'
-        word *= tk.char
+        word *= tk.char  # `word == "-"``
         update_chars(tk)
     end
 
+    # Read as long as `tk.char` is a digit, or not a dot
     while isdigit(tk.char) || (tk.char == '.' && !frac)
         # Only allow one decimal point
         if tk.char == '.'
-            frac = true
+            frac = true  # If meet '.', break the loop
         end
         word *= tk.char
         update_chars(tk)
