@@ -14,7 +14,6 @@ module Tokenize
 using DataStructures: Deque
 using IterTools: takewhile
 using Parameters: @with_kw
-using PyGen
 
 export Tokenizer,
     update_chars,
@@ -229,7 +228,7 @@ isalnum(c) = isletter(c) || isnumeric(c)
 
 function tee(iterable, n::Int = 2)
     deques = [Deque{AbstractString}() for i in range(1; stop = 2)]
-    @pygen function gen(mydeque)
+    function gen(mydeque)
         while true
             if !isempty(mydeque)             # when the local deque is empty
                 x = iterate(iterable)
@@ -238,7 +237,7 @@ function tee(iterable, n::Int = 2)
                     push!(d, newval)
                 end
             end
-            yield(popfirst!(mydeque))
+            popfirst!(mydeque)
         end
     end  # function gen
     return tuple(gen(d) for d in deques)
