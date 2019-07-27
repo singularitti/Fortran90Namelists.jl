@@ -1,7 +1,13 @@
-name = "Fotran90Namelist"
-uuid = "71cb2908-a46b-11e9-196d-c1ed44f93542"
+name = "Fortran90Namelists"
+uuid = "8fb689aa-71ff-4044-8071-0cffc910b57d"
 authors = ["Qi Zhang <singularitti@outlook.com>"]
 version = "0.1.0"
+
+[deps]
+DataStructures = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
+IterTools = "c8e1da08-722c-5040-9ed9-7db0dc04731e"
+Parameters = "d96e819e-fc66-5662-9728-84c9c7592b0a"
+PyGen = "e5b3ab76-e868-51fc-8e0f-886e572d5f5f"
 
 [compat]
 julia = "1"

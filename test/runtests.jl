@@ -1,6 +1,6 @@
-using Fotran90Namelist
+using Fortran90Namelists
 using Test
 
-@testset "Fotran90Namelist.jl" begin
+@testset "Fortran90Namelists.jl" begin
     # Write your own tests here.
 end
