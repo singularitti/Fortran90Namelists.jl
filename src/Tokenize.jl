@@ -29,8 +29,8 @@ const PUNCTUATION = raw"=+-*/\\()[]{},:;%&~<>?`|$#@"
     char = nothing
     idx = nothing
     whitespace = " \t\r\x0b\x0c"
-    prior_delim::Union{Nothing, AbstractString} = nothing
-    group_token::Union{Nothing, AbstractString} = nothing  # Set to true if inside a namelist group
+    prior_delim::Union{Nothing, AbstractChar} = nothing
+    group_token::Union{Nothing, AbstractChar} = nothing  # Set to true if inside a namelist group
 end  # struct Tokenizer
 
 """
@@ -51,9 +51,9 @@ function Base.parse(tk::Tokenizer, line)
 
     while tk.char != "\n"
         # Update namelist group status
-        tk.char in ('&', '$') && tk.group_token = tk.char
+        tk.char in ('&', '$') && (tk.group_token = tk.char)
 
-        if tk.group_token && ((tk.group_token, tk.char) in (('&', '/'), ('$', '$')))
+        if !isnothing(tk.group_token) && ((tk.group_token, tk.char) in (('&', '/'), ('$', '$')))
             tk.group_token = nothing  # A group (namelist) ends
         end
 
@@ -231,9 +231,8 @@ function tee(iterable, n::Int =2)
     function gen(mydeque)
         while true
             if !isempty(mydeque)             # when the local deque is empty
-                try:
-                    newval, state = iterate(iterable)   # fetch a new value and
-                    return
+                x = iterate(iterable)
+                newval = isnothing(x) ? (return x) : first(x)
                 for d in deques        # load it to all the deques
                     push!(d, newval)
                 end
