@@ -121,10 +121,15 @@ function Base.parse(tk::Tokenizer, line)
     return tokens
 end  # function Base.parse
 
-function parse_name(tk::Tokenizer, line)
+"""
+    parse_name(tk::Tokenizer, line)
+
+Tokenize a Fortran name, such as a variable or subroutine.
+"""
+function parse_name(tk::Tokenizer, line::AbstractString)
     endindex = tk.idx
     for char in line[tk.idx:end]
-        !isalnum(char) && !occursin(char, "\'\"_") && break
+        !isalnum(char) && !occursin(char, "'\"_") && break
         endindex += 1
     end
 
@@ -132,7 +137,8 @@ function parse_name(tk::Tokenizer, line)
 
     tk.idx = endindex - 1
     # Update iterator, minus first character which was already read
-    tk.characters = itertools.islice(tk.characters, length(word) - 1, nothing)
+    # Start from length(word) - 1 => drop length(word) - 2
+    tk.characters = Iterators.drop(tk.characters, length(word) - 2)
     update_chars(tk)
     return word
 end  # function parse_name
