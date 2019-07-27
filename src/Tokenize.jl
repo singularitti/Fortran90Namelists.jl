@@ -29,8 +29,8 @@ const PUNCTUATION = raw"=+-*/\\()[]{},:;%&~<>?`|$#@"
     char = nothing
     idx = nothing
     whitespace = " \t\r\x0b\x0c"
-    prior_delim = nothing
-    group_token = nothing  # Set to true if inside a namelist group
+    prior_delim::Union{Nothing, AbstractString} = nothing
+    group_token::Union{Nothing, AbstractString} = nothing  # Set to true if inside a namelist group
 end  # struct Tokenizer
 
 """
