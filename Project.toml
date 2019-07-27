@@ -1,5 +1,5 @@
-name = "Fotran90Namelist"
-uuid = "71cb2908-a46b-11e9-196d-c1ed44f93542"
+name = "Fortran90Namelists"
+uuid = "8fb689aa-71ff-4044-8071-0cffc910b57d"
 authors = ["Qi Zhang <singularitti@outlook.com>"]
 version = "0.1.0"
 

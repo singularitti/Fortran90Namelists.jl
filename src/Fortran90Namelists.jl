@@ -1,4 +1,4 @@
-module Fotran90Namelist
+module Fortran90Namelists
 
 include("Tokenize.jl")
 

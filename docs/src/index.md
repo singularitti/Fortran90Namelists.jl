@@ -1,8 +1,8 @@
-# Fotran90Namelist.jl
+# Fortran90Namelists.jl
 
 ```@index
 ```
 
 ```@autodocs
-Modules = [Fotran90Namelist]
+Modules = [Fortran90Namelists]
 ```
