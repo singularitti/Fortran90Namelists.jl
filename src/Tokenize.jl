@@ -21,8 +21,6 @@ export Tokenizer,
     parse_string,
     parse_numeric
 
-const SPECIAL_CHARS = " =+-*/\\()[]{},.:;!\"%&~<>?\'`|$\#@"
-const LEXICAL_TOKENS = "=+-*/()[],.:;%&<>"
 const PUNCTUATION = "=+-*/\\()[]{},:;%&~<>?`|$\#@"
 
 @with_kw mutable struct Tokenizer
