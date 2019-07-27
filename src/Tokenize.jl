@@ -39,13 +39,7 @@ end  # struct Tokenizer
 Update the current charters in the tokenizer.
 """
 function update_chars(tk::Tokenizer)
-    tk.prior_char, tk.char = tk.char, iterate(tk.characters, "\n")  #
-    x = iterate(tk.characters)
-    if isnothing(x)
-        tk.prior_char, tk.char = tk.char, '\n'
-    else
-        tk.prior_char, tk.char = tk.char, first(x)
-    end
+    tk.prior_char, tk.char = tk.char, next(tk.characters, '\n')
     tk.idx += 1
 end  # function update_chars
 
@@ -234,5 +228,10 @@ function tee(iterable, n::Int =2)
     end  # function gen
     return tuple(gen(d) for d in deques)
 end  # function tee
+
+function next(iterable, default)
+    x = iterate(iterable)
+    isnothing(x) ? default : first(x)
+end
 
 end
