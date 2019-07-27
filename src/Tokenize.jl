@@ -11,7 +11,6 @@ julia>
 """
 module Tokenize
 
-using DataStructures: Deque
 using IterTools: takewhile
 using Parameters: @with_kw
 
@@ -225,23 +224,6 @@ function parse_numeric(tk::Tokenizer)
 end  # function parse_numeric
 
 isalnum(c) = isletter(c) || isnumeric(c)
-
-function tee(iterable, n::Int = 2)
-    deques = [Deque{AbstractString}() for i in range(1; stop = 2)]
-    function gen(mydeque)
-        while true
-            if !isempty(mydeque)             # when the local deque is empty
-                x = iterate(iterable)
-                newval = isnothing(x) ? (return x) : first(x)
-                for d in deques        # load it to all the deques
-                    push!(d, newval)
-                end
-            end
-            popfirst!(mydeque)
-        end
-    end  # function gen
-    return tuple(gen(d) for d in deques)
-end  # function tee
 
 function next(iterable, default)
     x = iterate(iterable)
