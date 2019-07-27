@@ -151,12 +151,12 @@ Tokenize a Fortran string.
 function parse_string(tk::Tokenizer)
     word = ""
 
-    if isnothing(tk.prior_delim)  # FIXME:
-        delim = tk.prior_delim
+    if !isnothing(tk.prior_delim)  # A previous quotation mark presents
+        delim = tk.prior_delim  # Read until `delim`
         tk.prior_delim = nothing
     else
-        delim = tk.char
-        word *= tk.char
+        delim = tk.char  # No previous quotation mark presents
+        word *= tk.char  # Read this character
         update_chars(tk)
     end
 
