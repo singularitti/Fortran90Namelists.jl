@@ -21,7 +21,7 @@ export Tokenizer,
     parse_string,
     parse_numeric
 
-const PUNCTUATION = "=+-*/\\()[]{},:;%&~<>?`|$\#@"
+const PUNCTUATION = raw"=+-*/\\()[]{},:;%&~<>?`|$#@"
 
 @with_kw mutable struct Tokenizer
     characters = nothing
