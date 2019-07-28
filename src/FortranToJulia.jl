@@ -33,13 +33,12 @@ function Base.parse(::Type{T}, s::FortranData) where {T <: Float32}
     return parse(T, replace(lowercase(s.data), r"(?<=[^e])(?=[+-])" => "f"))
 end
 function Base.parse(::Type{T}, s::FortranData) where {T <: Float64}
-    str = lowercase(s.data, "d" => "e")
-    return parse(T, replace(replace(str, r"(?<=[^eEdD])(?=[+-])" => "e")))
+    return parse(T, replace(lowercase(s.data), r"d"i => "e"))
 end
 function Base.parse(::Type{Complex{T}}, s::FortranData) where {T <: AbstractFloat}
     str = s.data
-    if first(s) == '(' && last(s) == ')' && length(split(str, ',')) == 2
-        re, im = str[2:end - 1].split(',', limit = 2)
+    if first(str) == '(' && last(str) == ')' && length(split(str, ',')) == 2
+        re, im = split(str[2:end - 1], ',', limit = 2)
         return Complex(parse(T, re), parse(T, im))
     else
         throw(ParseError("$str must be in complex number form (x, y)."))
