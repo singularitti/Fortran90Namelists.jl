@@ -23,9 +23,7 @@ struct FortranData{T <: AbstractString}
 end
 
 macro f_str(str)
-    # Must escape the variable to return it to the calling context and executed there.
-    # Because `str` could be an variable
-    return :(FortranData($(esc(str))))
+    return :(FortranData(str))
 end
 
 function Base.parse(::Type{T}, s::FortranData) where {T <: Integer}
