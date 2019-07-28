@@ -31,8 +31,8 @@ using Fortran90Namelists.FortranToJulia
     @test parse(Float64, f"1.0d+0") === 1.0
 
     @test parse(Complex{Float64}, f"(5.229, -4.78)") === Complex(5.229, -4.78)
-    @test parse(Complex{Float64}, f"(0.0,1.0)") === Complex(0.0,1.0)
-    @test parse(Complex{Float64}, f"(0.0,1)") === Complex(0.0,1)
+    @test parse(Complex{Float64}, f"(0.0,1.0)") === Complex(0.0, 1.0)
+    @test parse(Complex{Float64}, f"(0.0,1)") === Complex(0.0, 1)
     @test parse(Complex{Float32}, f"(3.2767e+2, -0.65e-2)") === Complex{Float32}(3.2767e2, -0.65e-2)
 
     @test parse(Int, f"124") === 124
