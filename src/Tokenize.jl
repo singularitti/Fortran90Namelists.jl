@@ -11,6 +11,7 @@ julia>
 """
 module Tokenize
 
+using Compat: isnothing
 using IterTools: takewhile
 using Parameters: @with_kw
 

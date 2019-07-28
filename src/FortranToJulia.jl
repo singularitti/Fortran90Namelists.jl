@@ -14,6 +14,8 @@ julia>
 """
 module FortranToJulia
 
+using Compat: isnothing
+
 export FortranData, @f_str
 
 struct FortranData{T <: AbstractString}
