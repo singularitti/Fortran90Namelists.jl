@@ -169,10 +169,12 @@ function parse_string(tk::Tokenizer)
                 word *= repeat(delim, 2)
                 update_chars(tk)
             else
-                word *= delim && break
+                word *= delim
+                break
             end
         elseif tk.char == '\n'
-            tk.prior_delim = delim && break
+            tk.prior_delim = delim
+            break
         else
             word *= tk.char
             update_chars(tk)
