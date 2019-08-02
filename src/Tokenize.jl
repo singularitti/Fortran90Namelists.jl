@@ -134,12 +134,12 @@ function parse_name(tk::Tokenizer, line::AbstractString)
         endindex += 1
     end
 
-    word = line[tk.idx:endindex - 1]
+    word = line[tk.idx:endindex - 1]  # Do not include non-alphanumeric and non-'"_ characters in `word`
 
-    tk.idx = endindex - 1
+    tk.idx = endindex - 1  # Do not include non-alphanumeric and non-'"_ characters
     # Update iterator, minus first character which was already read
-    # Start from length(word) - 1 => drop length(word) - 2
-    tk.characters = Iterators.drop(tk.characters, length(word) - 2)
+    # Continue iterating from `length(word)` => drop the first `length(word) - 1` characters
+    tk.characters = Iterators.drop(tk.characters, length(word) - 1)
     update_chars(tk)
     return word
 end  # function parse_name
