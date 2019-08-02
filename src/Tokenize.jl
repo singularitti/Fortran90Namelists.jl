@@ -69,7 +69,7 @@ function Base.parse(tk::Tokenizer, line)
         # Ignore comment
         elseif occursin(tk.char, raw"!#") || isnothing(tk.group_token)  # Comment line
             # Abort the iteration and build the comment token
-            word = line[tk.idx:end - 1]  # Read to end but not '\n'
+            word = line[tk.idx:end]  # There is no '\n' at line end, no worry! Lines are already separated at line ends
             tk.char = '\n'  # NOTE: Cannot be "\n", which is a string!
         # Parse string
         elseif occursin(tk.char, raw"\"'") || !isnothing(tk.prior_delim)  # Meet a string
