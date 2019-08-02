@@ -36,7 +36,7 @@ using Fortran90Namelists.Tokenize
     ["    ", "v", " ", "=", " ", "1.00"],
     [raw"$"]]
     tk = Tokenizer()
-    open("test/data/dollar.nml", "r") do io
+    open(joinpath(dirname(@__FILE__), "data/dollar.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
             @test parse(tk, line) == benchmark[i]
         end
@@ -48,7 +48,7 @@ end # testset
     ["    ", "v", " ", "=", " ", "1.0"],
     ["/"]]
     tk = Tokenizer()
-    open("test/data/dollar_target.nml", "r") do io
+    open(joinpath(dirname(@__FILE__), "data/dollar_target.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
             @test parse(tk, line) == benchmark[i]
         end
@@ -62,7 +62,7 @@ end # testset
     ["    ", "z", " ", "=", " ", "3"],
     ["/"]]
     tk = Tokenizer()
-    open("test/data/comment_alt.nml", "r") do io
+    open(joinpath(dirname(@__FILE__), "data/comment_alt.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
             @test parse(tk, line) == benchmark[i]
         end
