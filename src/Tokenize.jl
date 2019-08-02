@@ -57,7 +57,7 @@ function Base.parse(tk::Tokenizer, line)
             tk.group_token = nothing  # A group (namelist) ends
         end
 
-        word = ""
+        word = ""  # Initialize or clear `word` if exists
         # Ignore whitespace
         if occursin(tk.char, WHITESPACE)  # " \t\r\x0b\x0c"
             while occursin(tk.char, WHITESPACE)
@@ -67,7 +67,7 @@ function Base.parse(tk::Tokenizer, line)
         # Ignore comment
         elseif occursin(tk.char, raw"!#") || isnothing(tk.group_token)  # Comment line
             # Abort the iteration and build the comment token
-            word = line[tk.idx:end]  # Read `word` until end
+            word = line[tk.idx:end - 1]  # Read to end but not '\n'
             tk.char = '\n'  # NOTE: Cannot be "\n", which is a string!
         # Parse string
         elseif occursin(tk.char, raw"\"'") || !isnothing(tk.prior_delim)  # Meet a string
