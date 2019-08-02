@@ -31,4 +31,16 @@ using Fortran90Namelists.Tokenize
     end
 end # testset
 
+@testset "Test dollar" begin
+    benchmark = [[raw"$", "dollar_nml"],
+    ["    ", "v", " ", "=", " ", "1.00"],
+    [raw"$"]]
+    tk = Tokenizer()
+    open("test/data/dollar.nml", "r") do io
+        for (i, line) in enumerate(eachline(io))
+            @test parse(tk, line) == benchmark[i]
+        end
+    end
+end # testset
+
 end
