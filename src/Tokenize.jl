@@ -141,7 +141,7 @@ function parse_name(tk::Tokenizer, line::AbstractString)
     tk.idx = endindex - 1  # Do not include non-alphanumeric and non-'"_ characters
     # Update iterator, minus first character which was already read
     # Continue iterating from `length(word)` => drop the first `length(word) - 1` characters
-    tk.characters = Iterators.drop(tk.characters, length(word) - 1)
+    tk.characters = Iterators.Stateful(collect(Iterators.drop(tk.characters, length(word) - 1)))
     update_chars(tk)
     return word
 end  # function parse_name
