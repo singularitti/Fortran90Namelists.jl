@@ -12,18 +12,18 @@ using Fortran90Namelists.Tokenize
 
 @testset "" begin
     tk = Tokenizer()
-    benchmark = [['&', "string_nml"],
-    ["    ", "str_basic", ' ', '=', ' ', "'hello'"],
-    ["    ", "str_no_delim", ' ', '=', ' ', "hello"],
-    ["    ", "str_no_delim_no_esc", ' ', '=', ' ', "a''b"],
-    ["    ", "single_esc_delim", ' ', '=', ' ', "'a ''single'' delimiter'"],
-    ["    ", "double_esc_delim", ' ', '=', ' ', "\"a \"\"double\"\" delimiter\""],
-    ["    ", "double_nested", ' ', '=', ' ', "\"\'\'x\'\' \"\"y\"\"\""],
-    ["    ", "str_list", ' ', '=', ' ', "'a'", ',', ' ', "'b'", ',', ' ', "'c'"],
-    ["    ", "slist_no_space", ' ', '=', ' ', "'a'", ',', "'b'", ',', "'c'"],
-    ["    ", "slist_no_quote", ' ', '=', ' ', 'a', ',', 'b', ',', 'c'],
-    ["    ", "slash", ' ', '=', ' ', "'back\\slash'"],
-    ['/']]
+    benchmark = [["&", "string_nml"],
+    ["    ", "str_basic", " ", "=", " ", "\"hello\""],
+    ["    ", "str_no_delim", " ", "=", " ", "hello"],
+    ["    ", "str_no_delim_no_esc", " ", "=", " ", "a\"\"b"],
+    ["    ", "single_esc_delim", " ", "=", " ", "\"a \"\"single\"\" delimiter\""],
+    ["    ", "double_esc_delim", " ", "=", " ", "\"a \"\"double\"\" delimiter\""],
+    ["    ", "double_nested", " ", "=", " ", "\"\"\"x\"\" \"\"y\"\"\""],
+    ["    ", "str_list", " ", "=", " ", "\"a\"", ",", " ", "\"b\"", ",", " ", "\"c\""],
+    ["    ", "slist_no_space", " ", "=", " ", "\"a\"", ",", "\"b\"", ",", "\"c\""],
+    ["    ", "slist_no_quote", " ", "=", " ", "a", ",", "b", ",", "c"],
+    ["    ", "slash", " ", "=", " ", "\"back\\slash\""],
+    ["/"]]
     open("test/data/string.nml", "r") do io
         for (i, line) in enumerate(eachline(io))
             @test parse(tk, line) == benchmark[i]
@@ -37,6 +37,18 @@ end # testset
     [raw"$"]]
     tk = Tokenizer()
     open("test/data/dollar.nml", "r") do io
+        for (i, line) in enumerate(eachline(io))
+            @test parse(tk, line) == benchmark[i]
+        end
+    end
+end # testset
+
+@testset "Test dollar target" begin
+    benchmark = [["&", "dollar_nml"],
+    ["    ", "v", " ", "=", " ", "1.0"],
+    ["/"]]
+    tk = Tokenizer()
+    open("test/data/dollar_target.nml", "r") do io
         for (i, line) in enumerate(eachline(io))
             @test parse(tk, line) == benchmark[i]
         end
