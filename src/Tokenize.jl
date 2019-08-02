@@ -54,7 +54,9 @@ function Base.parse(tk::Tokenizer, line)
         occursin(tk.char, raw"&$") && (tk.group_token = tk.char)
 
         if !isnothing(tk.group_token) && ((tk.group_token, tk.char) in (('&', '/'), ('$', '$')))
-            tk.group_token = nothing  # A group (namelist) ends
+            # A namelist ends, the value cannot be the default value (`nothing`)
+            # Because it is being compared below
+            tk.group_token = '\0'
         end
 
         word = ""  # Initialize or clear `word` if exists
