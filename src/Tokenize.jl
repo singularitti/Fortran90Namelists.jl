@@ -22,7 +22,7 @@ export Tokenizer,
     parse_numeric
 
 const PUNCTUATION = raw"=+-*/\\()[]{},:;%&~<>?`|$#@"
-const WHITESPACE = raw" \t\r\x0b\x0c"
+const WHITESPACE = " \t\r\v\f"  # '\v' => '\x0b', '\f' => '\x0c' in Python
 
 @with_kw mutable struct Tokenizer
     characters = nothing
