@@ -86,4 +86,36 @@ end # testset
     end
 end # testset
 
+@testset "Test comment target" begin
+    benchmark = [["&", "comment_nml"],
+    ["    ", "v_cmt_inline", " ", "=", " ", "123"],
+    ["    ", "v_cmt_in_str", " ", "=", " ", "'This token ! is not a comment'"],
+    ["    ", "v_cmt_after_str", " ", "=", " ", "'This ! is not a comment'"],
+    ["/"]]
+    tk = Tokenizer()
+    open(joinpath(dirname(@__FILE__), "data/comment_target.nml"), "r") do io
+        for (i, line) in enumerate(eachline(io))
+            @test parse(tk, line) == benchmark[i]
+        end
+    end
+end # testset
+
+@testset "Test comment" begin
+    benchmark = [["! This is an external comment"],
+    ["&", "comment_nml"],
+    ["    ", "v_cmt_inline", " ", "=", " ", "123", "  ", "! This is an inline comment"],
+    ["    ", "! This is a separate comment"],
+    ["    ", "v_cmt_in_str", " ", "=", " ", "'This token ! is not a comment'"],
+    ["    ", "v_cmt_after_str", " ", "=", " ", "'This ! is not a comment'", " ", "! But this is"],
+    ["/"],
+    ["! This is a post-namelist comment"]]
+    tk = Tokenizer()
+    open(joinpath(dirname(@__FILE__), "data/comment.nml"), "r") do io
+        for (i, line) in enumerate(eachline(io))
+            @test parse(tk, line) == benchmark[i]
+        end
+    end
+end # testset
+
+
 end
