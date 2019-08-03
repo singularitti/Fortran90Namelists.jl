@@ -11,7 +11,6 @@ using Test
 using Fortran90Namelists.Tokenize
 
 @testset "Test string" begin
-    tk = Tokenizer()
     benchmark = [["&", "string_nml"],
     ["    ", "str_basic", " ", "=", " ", "'hello'"],
     ["    ", "str_no_delim", " ", "=", " ", "hello"],
@@ -24,6 +23,7 @@ using Fortran90Namelists.Tokenize
     ["    ", "slist_no_quote", " ", "=", " ", "a", ",", "b", ",", "c"],
     ["    ", "slash", " ", "=", " ", "'back\\slash'"],
     ["/"]]
+    tk = Tokenizer()
     open("test/data/string.nml", "r") do io
         for (i, line) in enumerate(eachline(io))
             @test parse(tk, line) == benchmark[i]
