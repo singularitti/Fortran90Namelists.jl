@@ -72,7 +72,7 @@ end # testset
     ["    ", "slash", " ", "=", " ", "'back\\slash'"],
     ["/"]]
     tk = Tokenizer()
-    open("test/data/string.nml", "r") do io
+    open(joinpath(dirname(@__FILE__), "data/string.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
             @test parse(tk, line) == benchmark[i]
         end
