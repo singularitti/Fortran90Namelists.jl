@@ -117,5 +117,17 @@ end # testset
     end
 end # testset
 
+@testset "Test default index" begin
+    benchmark = [["&", "default_index_nml"],
+    ["    ", "v", "(", "3", ":", "5", ")", " ", "=", " ", "3", ",", " ", "4", ",", " ", "5"],
+    ["    ", "v", " ", "=", " ", "1", ",", " ", "2"],
+    ["/"]]
+    tk = Tokenizer()
+    open(joinpath(dirname(@__FILE__), "data/default_index.nml"), "r") do io
+        for (i, line) in enumerate(eachline(io))
+            @test parse(tk, line) == benchmark[i]
+        end
+    end
+end # testset
 
 end
