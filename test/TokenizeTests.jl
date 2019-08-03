@@ -10,6 +10,54 @@ using Test
 
 using Fortran90Namelists.Tokenize
 
+@testset "Test bcast" begin
+    benchmark = [["&", "bcast_nml"],
+    ["    ", "x", " ", "=", " ", "2", "*", "2.0"],
+    ["    ", "y", " ", "=", " ", "3", "*"],
+    ["    ", "z", " ", "=", " ", "4", "*", ".true."],
+    ["/"],
+    [],
+    ["&", "bcast_endnull_nml"],
+    ["    ", "x", " ", "=", " ", "2", "*", "2.0"],
+    ["    ", "y", " ", "=", " ", "3", "*"],
+    ["/"],
+    [],
+    ["&", "bcast_mixed_nml"],
+    ["    ", "x", " ", "=", " ", "3", "*", "1", ",", " ", "2", ",", " ", "3", ",", " ", "4"],
+    ["    ", "y", " ", "=", " ", "3", "*", "1", ",", " ", "2", "*", "2", ",", " ", "3"],
+    ["/"]]
+    tk = Tokenizer()
+    open(joinpath(dirname(@__FILE__), "data/bcast.nml"), "r") do io
+        for (i, line) in enumerate(eachline(io))
+            @test parse(tk, line) == benchmark[i]
+        end
+    end
+end # testset
+
+@testset "Test bcast target" begin
+    benchmark = [["&", "bcast_nml"],
+    ["    ", "x", " ", "=", " ", "2.0", ",", " ", "2.0"],
+    ["    ", "y", " ", "=", " ", ",", " ", ",", " ", ","],
+    ["    ", "z", " ", "=", " ", ".true.", ",", " ", ".true.", ",", " ", ".true.", ",", " ", ".true."],
+    ["/"],
+    [],
+    ["&", "bcast_endnull_nml"],
+    ["    ", "x", " ", "=", " ", "2.0", ",", " ", "2.0"],
+    ["    ", "y", " ", "=", " ", ",", " ", ",", " ", ","],
+    ["/"],
+    [],
+    ["&", "bcast_mixed_nml"],
+    ["    ", "x", " ", "=", " ", "1", ",", " ", "1", ",", " ", "1", ",", " ", "2", ",", " ", "3", ",", " ", "4"],
+    ["    ", "y", " ", "=", " ", "1", ",", " ", "1", ",", " ", "1", ",", " ", "2", ",", " ", "2", ",", " ", "3"],
+    ["/"]]
+    tk = Tokenizer()
+    open(joinpath(dirname(@__FILE__), "data/bcast_target.nml"), "r") do io
+        for (i, line) in enumerate(eachline(io))
+            @test parse(tk, line) == benchmark[i]
+        end
+    end
+end # testset
+
 @testset "Test string" begin
     benchmark = [["&", "string_nml"],
     ["    ", "str_basic", " ", "=", " ", "'hello'"],
