@@ -236,21 +236,4 @@ function next(iterable, default)
     isnothing(x) ? default : first(x)
 end
 
-function tee(iterable, n = 2)
-    deques = [[] for i in 1:n]
-    function generator(iterable, deques, deque)
-        while true
-            if isempty(deque)             # when the local deque is empty
-                newval = iterate(iterable)
-                isnothing(newval) && return nothing
-                for d in deques        # load it to all the deques
-                    push!(d, first(newval))
-                end
-            end
-            @yield popfirst!(deque)
-        end
-    end
-    return tuple(generator(iterable, deques, d) for d in deques)
-end
-
 end
