@@ -178,4 +178,45 @@ end # testset
     end
 end # testset
 
+@testset "Test empty namelist" begin
+    benchmark = [["&", "empty_nml"],
+    ["/"]]
+    tk = Tokenizer()
+    open(joinpath(dirname(@__FILE__), "data/empty.nml"), "r") do io
+        for (i, line) in enumerate(eachline(io))
+            @test parse(tk, line) == benchmark[i]
+        end
+    end
+end # testset
+
+@testset "Test external token" begin
+    benchmark = [["a"],
+    ["123"],
+    ["&", "ext_token_nml"],
+    ["    ", "x", " ", "=", " ", "1"],
+    ["/"],
+    ["456"],
+    ["z"]]
+    tk = Tokenizer()
+    open(joinpath(dirname(@__FILE__), "data/ext_token.nml"), "r") do io
+        for (i, line) in enumerate(eachline(io))
+            @test parse(tk, line) == benchmark[i]
+        end
+    end
+end # testset
+
+# FIXME:
+# @testset "Test external comment" begin
+#     benchmark = [[],
+#     ["&", "efitin"],
+#     ["abc", " ", "=", " ", "0"],
+#     ["/"]]
+#     tk = Tokenizer()
+#     open(joinpath(dirname(@__FILE__), "data/extern_cmt.nml"), "r") do io
+#         for (i, line) in enumerate(eachline(io))
+#             @test parse(tk, line) == benchmark[i]
+#         end
+#     end
+# end # testset
+
 end
