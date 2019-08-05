@@ -80,16 +80,17 @@ function Base.parse(tk::Tokenizer, line)
         # Meet a sign
         elseif occursin(tk.char, "+-")
             # Lookahead to check for IEEE value
-            tk.characters, lookahead = repeat([Iterators.Stateful(collect(tk.characters))], 2)  # FIXME:
-            ieee_val = join(takewhile(isletter, lookahead), "")
-            if lowercase(ieee_val) in ("inf", "infinity", "nan")  # Meet an nan/infinity
-                word = tk.char * ieee_val
-                tk.characters = lookahead
-                tk.prior_char = ieee_val[end]
-                tk.char = next(lookahead, '\n')
-            else
-                word = parse_numeric(tk)  # Meet a number
-            end
+            # tk.characters, lookahead = repeat([Iterators.Stateful(collect(tk.characters))], 2)  # FIXME:
+            # ieee_val = join(takewhile(isletter, lookahead), "")
+            # if lowercase(ieee_val) in ("inf", "infinity", "nan")  # Meet an nan/infinity
+            #     word = tk.char * ieee_val
+            #     tk.characters = lookahead
+            #     tk.prior_char = ieee_val[end]
+            #     tk.char = next(lookahead, '\n')
+            # else
+            #     word = parse_numeric(tk)  # Meet a number
+            # end
+            word = parse_numeric(tk)  # Meet a number
         # Meet a number
         elseif isdigit(tk.char)
             word = parse_numeric(tk)
