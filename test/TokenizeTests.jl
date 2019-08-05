@@ -363,4 +363,100 @@ end # testset
     end
 end # testset
 
+@testset "Test index bad end" begin
+    benchmark = [["&", "bad_index_nml"],
+    ["    ", "y", "(", "1", ":", "~", ")", " ", "=", " ", "1", ",", " ", "2", ",", " ", "3"],
+    ["/"]]
+    tk = Tokenizer()
+    open(joinpath(dirname(@__FILE__), "data/index_bad_end.nml"), "r") do io
+        for (i, line) in enumerate(eachline(io))
+            @test parse(tk, line) == benchmark[i]
+        end
+    end
+end # testset
+
+@testset "Test index bad start" begin
+    benchmark = [["&", "bad_index_nml"],
+    ["    ", "y", "(", "1", "~", ")", " ", "=", " ", "1", ",", " ", "2", ",", " ", "3"],
+    ["/"]]
+    tk = Tokenizer()
+    open(joinpath(dirname(@__FILE__), "data/index_bad_start.nml"), "r") do io
+        for (i, line) in enumerate(eachline(io))
+            @test parse(tk, line) == benchmark[i]
+        end
+    end
+end # testset
+
+@testset "Test index bad stride" begin
+    benchmark = [["&", "bad_index_nml"],
+    ["    ", "y", "(", "1", ":", "3", ":", "~", ")", " ", "=", " ", "1", ",", " ", "2", ",", " ", "3"],
+    ["/"]]
+    tk = Tokenizer()
+    open(joinpath(dirname(@__FILE__), "data/index_bad_stride.nml"), "r") do io
+        for (i, line) in enumerate(eachline(io))
+            @test parse(tk, line) == benchmark[i]
+        end
+    end
+end # testset
+
+@testset "Test index bad" begin
+    benchmark = [["&", "bad_index_nml"],
+    ["    ", "y", "(", "~", ")", " ", "=", " ", "1", ",", " ", "2", ",", " ", "3"],
+    ["/"]]
+    tk = Tokenizer()
+    open(joinpath(dirname(@__FILE__), "data/index_bad.nml"), "r") do io
+        for (i, line) in enumerate(eachline(io))
+            @test parse(tk, line) == benchmark[i]
+        end
+    end
+end # testset
+
+@testset "Test index empty end" begin
+    benchmark = [["&", "empty_index_nml"],
+    ["    ", "x", "(", "1", ":", ":", "2", ")", " ", "=", " ", "1", ",", " ", "2", ",", " ", "3"],
+    ["/"]]
+    tk = Tokenizer()
+    open(joinpath(dirname(@__FILE__), "data/index_empty_end.nml"), "r") do io
+        for (i, line) in enumerate(eachline(io))
+            @test parse(tk, line) == benchmark[i]
+        end
+    end
+end # testset
+
+@testset "Test index empty stride" begin
+    benchmark = [["&", "empty_index_nml"],
+    ["    ", "x", "(", "1", ":", "3", ":", ")", " ", "=", " ", "1", ",", " ", "2", ",", " ", "3"],
+    ["/"]]
+    tk = Tokenizer()
+    open(joinpath(dirname(@__FILE__), "data/index_empty_stride.nml"), "r") do io
+        for (i, line) in enumerate(eachline(io))
+            @test parse(tk, line) == benchmark[i]
+        end
+    end
+end # testset
+
+@testset "Test index empty" begin
+    benchmark = [["&", "empty_index_nml"],
+    ["    ", "x", "(", ")", " ", "=", " ", "1", ",", " ", "2", ",", " ", "3"],
+    ["/"]]
+    tk = Tokenizer()
+    open(joinpath(dirname(@__FILE__), "data/index_empty.nml"), "r") do io
+        for (i, line) in enumerate(eachline(io))
+            @test parse(tk, line) == benchmark[i]
+        end
+    end
+end # testset
+
+@testset "Test index zero stride" begin
+    benchmark = [["&", "bad_index_nml"],
+    ["    ", "y", "(", "1", ":", "3", ":", "0", ")", " ", "=", " ", "1", ",", " ", "2", ",", " ", "3"],
+    ["/"]]
+    tk = Tokenizer()
+    open(joinpath(dirname(@__FILE__), "data/index_zero_stride.nml"), "r") do io
+        for (i, line) in enumerate(eachline(io))
+            @test parse(tk, line) == benchmark[i]
+        end
+    end
+end # testset
+
 end
