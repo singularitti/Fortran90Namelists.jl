@@ -304,4 +304,63 @@ end # testset
     end
 end # testset
 
+@testset "Test global index" begin
+    benchmark = [["&", "global_index_nml"],
+    ["    ", "v_zero", "(", "0", ":", "3", ")", " ", "=", " ", "1", ",", " ", "2", ",", " ", "3", ",", " ", "4"],
+    ["    ", "v_neg", "(", "-2", ":", "1", ")", " ", "=", " ", "1", ",", " ", "2", ",", " ", "3", ",", " ", "4"],
+    ["    ", "v_pos", "(", "2", ":", "5", ")", " ", "=", " ", "1", ",", " ", "2", ",", " ", "3", ",", " ", "4"],
+    ["/"]]
+    tk = Tokenizer()
+    open(joinpath(dirname(@__FILE__), "data/global_index.nml"), "r") do io
+        for (i, line) in enumerate(eachline(io))
+            @test parse(tk, line) == benchmark[i]
+        end
+    end
+end # testset
+
+@testset "Test group repeat" begin
+    benchmark = [["&", "grp_repeat_nml"],
+    ["    ", "x", " ", "=", " ", "1"],
+    ["/"],
+    ["&", "grp_repeat_nml"],
+    ["    ", "x", " ", "=", " ", "2"],
+    ["/"],
+    ["&", "CASE_CHECK_nml"],
+    ["    ", "y", " ", "=", " ", "1"],
+    ["/"],
+    ["&", "CASE_CHECK_nml"],
+    ["    ", "y", " ", "=", " ", "2"],
+    ["/"]]
+    tk = Tokenizer()
+    open(joinpath(dirname(@__FILE__), "data/grp_repeat.nml"), "r") do io
+        for (i, line) in enumerate(eachline(io))
+            @test parse(tk, line) == benchmark[i]
+        end
+    end
+end # testset
+
+@testset "Test group repeat target" begin
+    benchmark = [["&", "grp_repeat_nml"],
+    ["    ", "x", " ", "=", " ", "1"],
+    ["/"],
+    [],
+    ["&", "grp_repeat_nml"],
+    ["    ", "x", " ", "=", " ", "2"],
+    ["/"],
+    [],
+    ["&", "case_check_nml"],
+    ["    ", "y", " ", "=", " ", "1"],
+    ["/"],
+    [],
+    ["&", "case_check_nml"],
+    ["    ", "y", " ", "=", " ", "2"],
+    ["/"]]
+    tk = Tokenizer()
+    open(joinpath(dirname(@__FILE__), "data/grp_repeat_target.nml"), "r") do io
+        for (i, line) in enumerate(eachline(io))
+            @test parse(tk, line) == benchmark[i]
+        end
+    end
+end # testset
+
 end
