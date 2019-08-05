@@ -459,4 +459,38 @@ end # testset
     end
 end # testset
 
+@testset "Test logical representation" begin
+    benchmark = [["&", "logical_nml"],
+    ["    ", "a", " ", "=", " ", "T"],
+    ["    ", "b", " ", "=", " ", "F"],
+    ["    ", "c", " ", "=", " ", "T"],
+    ["    ", "d", " ", "=", " ", "F"],
+    ["    ", "e", " ", "=", " ", "T"],
+    ["    ", "f", " ", "=", " ", "F"],
+    ["/"]]
+    tk = Tokenizer()
+    open(joinpath(dirname(@__FILE__), "data/logical_repr.nml"), "r") do io
+        for (i, line) in enumerate(eachline(io))
+            @test parse(tk, line) == benchmark[i]
+        end
+    end
+end # testset
+
+@testset "Test logical" begin
+    benchmark = [["&", "logical_nml"],
+    ["    ", "a", " ", "=", " ", ".true."],
+    ["    ", "b", " ", "=", " ", ".false."],
+    ["    ", "c", " ", "=", " ", "t"],
+    ["    ", "d", " ", "=", " ", "f"],
+    ["    ", "e", " ", "=", " ", ".t"],
+    ["    ", "f", " ", "=", " ", ".f"],
+    ["/"]]
+    tk = Tokenizer()
+    open(joinpath(dirname(@__FILE__), "data/logical.nml"), "r") do io
+        for (i, line) in enumerate(eachline(io))
+            @test parse(tk, line) == benchmark[i]
+        end
+    end
+end # testset
+
 end
