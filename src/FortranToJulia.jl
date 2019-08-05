@@ -23,7 +23,7 @@ struct FortranData{T <: AbstractString}
 end
 
 macro f_str(str)
-    return :(FortranData(str))
+    return :(FortranData($str))
 end
 
 function Base.parse(::Type{T}, s::FortranData) where {T <: Integer}
