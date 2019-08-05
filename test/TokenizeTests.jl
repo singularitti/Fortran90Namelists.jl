@@ -250,4 +250,58 @@ end # testset
     end
 end # testset
 
+@testset "Test float target" begin
+    benchmark = [["&", "float_nml"],
+    ["    ", "v_float", " ", "=", " ", "1.0"],
+    ["    ", "v_decimal_start", " ", "=", " ", "0.1"],
+    ["    ", "v_decimal_end", " ", "=", " ", "1.0"],
+    ["    ", "v_negative", " ", "=", " ", "-1.0"],
+    ["    ", "v_single", " ", "=", " ", "1.0"],
+    ["    ", "v_double", " ", "=", " ", "1.0"],
+    ["    ", "v_single_upper", " ", "=", " ", "1.0"],
+    ["    ", "v_double_upper", " ", "=", " ", "1.0"],
+    ["    ", "v_positive_index", " ", "=", " ", "10.0"],
+    ["    ", "v_negative_index", " ", "=", " ", "0.1"],
+    ["    ", "v_no_exp_pos", " ", "=", " ", "1.0"],
+    ["    ", "v_no_exp_neg", " ", "=", " ", "1.0"],
+    ["    ", "v_no_exp_pos_dot", " ", "=", " ", "1.0"],
+    ["    ", "v_no_exp_neg_dot", " ", "=", " ", "1.0"],
+    ["    ", "v_neg_no_exp_pos", " ", "=", " ", "-1.0"],
+    ["    ", "v_neg_no_exp_neg", " ", "=", " ", "-1.0"],
+    ["/"]]
+    tk = Tokenizer()
+    open(joinpath(dirname(@__FILE__), "data/float_target.nml"), "r") do io
+        for (i, line) in enumerate(eachline(io))
+            @test parse(tk, line) == benchmark[i]
+        end
+    end
+end # testset
+
+@testset "Test float format" begin
+    benchmark = [["&", "float_nml"],
+    ["    ", "v_float", " ", "=", " ", "1.000"],
+    ["    ", "v_decimal_start", " ", "=", " ", "0.100"],
+    ["    ", "v_decimal_end", " ", "=", " ", "1.000"],
+    ["    ", "v_negative", " ", "=", " ", "-1.000"],
+    ["    ", "v_single", " ", "=", " ", "1.000"],
+    ["    ", "v_double", " ", "=", " ", "1.000"],
+    ["    ", "v_single_upper", " ", "=", " ", "1.000"],
+    ["    ", "v_double_upper", " ", "=", " ", "1.000"],
+    ["    ", "v_positive_index", " ", "=", " ", "10.000"],
+    ["    ", "v_negative_index", " ", "=", " ", "0.100"],
+    ["    ", "v_no_exp_pos", " ", "=", " ", "1.000"],
+    ["    ", "v_no_exp_neg", " ", "=", " ", "1.000"],
+    ["    ", "v_no_exp_pos_dot", " ", "=", " ", "1.000"],
+    ["    ", "v_no_exp_neg_dot", " ", "=", " ", "1.000"],
+    ["    ", "v_neg_no_exp_pos", " ", "=", " ", "-1.000"],
+    ["    ", "v_neg_no_exp_neg", " ", "=", " ", "-1.000"],
+    ["/"]]
+    tk = Tokenizer()
+    open(joinpath(dirname(@__FILE__), "data/float_format.nml"), "r") do io
+        for (i, line) in enumerate(eachline(io))
+            @test parse(tk, line) == benchmark[i]
+        end
+    end
+end # testset
+
 end
