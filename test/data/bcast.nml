@@ -1,0 +1,15 @@
+&bcast_nml
+    x = 2*2.0
+    y = 3*
+    z = 4*.true.
+/
+
+&bcast_endnull_nml
+    x = 2*2.0
+    y = 3*
+/
+
+&bcast_mixed_nml
+    x = 3*1, 2, 3, 4
+    y = 3*1, 2*2, 3
+/
