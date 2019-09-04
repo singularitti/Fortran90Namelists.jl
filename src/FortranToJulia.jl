@@ -41,7 +41,7 @@ function Base.parse(::Type{Complex{T}}, s::FortranData) where {T <: AbstractFloa
         re, im = split(str[2:end - 1], ',', limit = 2)
         return Complex(parse(T, re), parse(T, im))
     else
-        throw(ParseError("$str must be in complex number form (x, y)."))
+        throw(Meta.ParseError("$str must be in complex number form (x, y)."))
     end
 end
 function Base.parse(::Type{Bool}, s::FortranData)
@@ -51,13 +51,13 @@ function Base.parse(::Type{Bool}, s::FortranData)
     elseif str in (".false.", ".f.", "false", 'f')
         return false
     else
-        throw(ParseError("$str is not a valid logical constant."))
+        throw(Meta.ParseError("$str is not a valid logical constant."))
     end
 end
 function Base.parse(::Type{T}, s::FortranData) where {T <: AbstractString}
     str = s.data
     m = match(r"([\"'])((?:\\\1|.)*?)\1", str)
-    isnothing(m) && throw(ParseError("$str is not a valid string!"))
+    isnothing(m) && throw(Meta.ParseError("$str is not a valid string!"))
     quotation_mark, content = m.captures
     # Replace escaped strings
     return string(replace(content, repeat(quotation_mark, 2) => quotation_mark))
