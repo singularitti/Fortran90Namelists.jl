@@ -1,4 +1,8 @@
-# Fortran90Namelists.jl
+```@meta
+CurrentModule = Fortran90Namelists
+```
+
+# Fortran90Namelists
 
 ```@index
 ```
