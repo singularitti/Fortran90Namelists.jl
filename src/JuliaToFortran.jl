@@ -15,28 +15,30 @@ using Fortran90Namelists.FortranToJulia
 
 export to_fortran
 
-function to_fortran(v::Int)
+function to_fortran(v::Integer)
     return FortranData(string(v))
 end
-function to_fortran(v::Float32; scientific::Bool=false)
+function to_fortran(v::Float32, scientific=false)
     str = string(v)
-    scientific && return FortranData(replace(str, r"f"i => "e"))
-    return FortranData(str)
+    if scientific
+        return FortranData(replace(str, r"f"i => "e"))
+    else
+        return FortranData(str)
+    end
 end
-function to_fortran(v::Float64; scientific::Bool=false)
+function to_fortran(v::Float64, scientific=false)
     str = string(v)
-    scientific && return FortranData(replace(str, r"e"i => "d"))
-    return FortranData(string(v))
+    if scientific
+        return FortranData(replace(str, r"e"i => "d"))
+    else
+        return FortranData(string(v))
+    end
 end
 function to_fortran(v::Bool)
     return v ? FortranData(".true.") : FortranData(".false.")
 end
 function to_fortran(v::AbstractString)
     return FortranData("'$v'")
-end
-
-function Base.string(s::FortranData)
-    return string(s.data)
 end
 
 end
