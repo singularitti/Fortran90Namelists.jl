@@ -13,7 +13,7 @@ module Tokenize
 
 export Tokenizer, update_chars, lex, lex_name, lex_string, lex_numeric
 
-const PUNCTUATION = raw"=+-*/\\()[]{},:;%&~<>?`|$#@"
+const PUNCTUATION = raw"=*/\\()[]{},:;%&~<>?`|$#@"
 const WHITESPACE = " \t\r\v\f"  # '\v' => '\x0b', '\f' => '\x0c' in Python
 
 mutable struct Tokenizer
