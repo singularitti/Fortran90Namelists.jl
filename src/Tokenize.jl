@@ -88,30 +88,6 @@ function lex(tk::Tokenizer, line)
 end
 
 """
-    lex_name(tk::Tokenizer, line)
-
-Tokenize a Fortran name, such as a variable or subroutine.
-"""
-function lex_name(tk::Tokenizer, line::AbstractString)
-    endindex = tk.index
-    for char in line[(tk.index):end]
-        !isalnum(char) && !occursin(char, raw"'\"_") && break
-        endindex += 1
-    end
-
-    word = line[(tk.index):(endindex - 1)]  # Do not include non-alphanumeric and non-'"_ characters in `word`
-
-    tk.index = endindex - 1  # Do not include non-alphanumeric and non-'"_ characters
-    # Update iterator, minus first character which was already read
-    # Continue iterating from `length(word)` => drop the first `length(word) - 1` characters
-    tk.characters = Iterators.Stateful(
-        collect(Iterators.drop(tk.characters, length(word) - 1))
-    )
-    update_chars(tk)
-    return word
-end
-
-"""
     lex_string(tk::Tokenizer)
 
 Tokenize a Fortran string.
@@ -150,51 +126,6 @@ function lex_string(tk::Tokenizer)
 
     return word
 end
-
-"""
-    lex_numeric(tk::Tokenizer)
-
-Tokenize a Fortran numerical value.
-"""
-function lex_numeric(tk::Tokenizer)
-    word = ""
-    frac = false
-
-    if tk.char == '-'
-        word *= tk.char  # `word == "-"``
-        update_chars(tk)
-    end
-
-    # Read as long as `tk.char` is a digit, or not a dot
-    while isdigit(tk.char) || (tk.char == '.' && !frac)
-        # Only allow one decimal point
-        if tk.char == '.'
-            frac = true  # If meet '.', break the loop
-        end
-        word *= tk.char
-        update_chars(tk)
-    end
-
-    # Check for float exponent
-    if occursin(tk.char, "eEdD")
-        word *= tk.char
-        update_chars(tk)
-    end
-
-    if occursin(tk.char, "+-")
-        word *= tk.char
-        update_chars(tk)
-    end
-
-    while isdigit(tk.char)
-        word *= tk.char
-        update_chars(tk)
-    end
-
-    return word
-end
-
-isalnum(c) = isletter(c) || isnumeric(c)
 
 function next(iterable, default)
     x = iterate(iterable)
