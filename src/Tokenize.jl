@@ -72,7 +72,7 @@ function lex(tk::Tokenizer, line)
             word = line[(tk.index):end]  # There is no '\n' at line end, no worry! Lines are already separated at line ends
             tk.char = '\n'
         elseif tk.char in ('\'', '"') || !isnothing(tk.prior_delim)  # Lex a string
-            word = lex_string(tk)
+            word = lexstring(tk)
         elseif occursin(tk.char, PUNCTUATION)
             word = tk.char
             update_chars(tk)
@@ -88,14 +88,13 @@ function lex(tk::Tokenizer, line)
 end
 
 """
-    lex_string(tk::Tokenizer)
+    lexstring(tk::Tokenizer)
 
 Tokenize a Fortran string.
 """
-function lex_string(tk::Tokenizer)
+function lexstring(tk::Tokenizer)
     word = ""
-
-    if !isnothing(tk.prior_delim)  # A previous quotation mark presents
+    if tk.prior_delim !== nothing  # A previous quotation mark presents
         delim = tk.prior_delim  # Read until `delim`
         tk.prior_delim = nothing
     else
@@ -103,13 +102,12 @@ function lex_string(tk::Tokenizer)
         word *= tk.char  # Read this character
         update_chars(tk)
     end
-
     while true
         if tk.char == delim
             # Check for escaped delimiters
             update_chars(tk)
             if tk.char == delim
-                word *= repeat(delim, 2)
+                word *= delim^2
                 update_chars(tk)
             else
                 word *= delim
@@ -123,7 +121,6 @@ function lex_string(tk::Tokenizer)
             update_chars(tk)
         end
     end
-
     return word
 end
 
