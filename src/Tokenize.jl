@@ -13,8 +13,40 @@ module Tokenize
 
 export Tokenizer, update_chars, lex, lex_name, lex_string, lex_numeric
 
-const PUNCTUATION = raw"=*/\\()[]{},:;%&~<>?`|$#@"
-const WHITESPACE = " \t\r\v\f"  # '\v' => '\x0b', '\f' => '\x0c' in Python
+const PUNCTUATION = [
+    ' ',
+    '=',
+    '+',
+    '-',
+    '*',
+    '/',
+    '\\',
+    '(',
+    ')',
+    '[',
+    ']',
+    '{',
+    '}',
+    ',',
+    '.',
+    ':',
+    ';',
+    '!',
+    '"',
+    '%',
+    '&',
+    '~',
+    '<',
+    '>',
+    '?',
+    ''',
+    '`',
+    '|',
+    '$',
+    '#',
+    '@',
+]
+const WHITESPACE = [' ', '\t', '\r', '\v', '\f']  # '\v' => '\x0b', '\f' => '\x0c' in Python
 
 mutable struct Tokenizer
     chars::Iterators.Stateful
@@ -53,7 +85,7 @@ function lex(tk::Tokenizer, line)
     update_chars!(tk)
     while tk.char != '\n'
         # Update namelist group status
-        if occursin(tk.char, raw"&$")
+        if tk.char in ('&', '$')
             tk.group_token = tk.char
         end
         if !isnothing(tk.group_token) &&
@@ -63,22 +95,22 @@ function lex(tk::Tokenizer, line)
             tk.group_token = '\0'
         end
         word = ""  # Create or clear `word`
-        if occursin(tk.char, WHITESPACE)  # Ignore whitespace
-            while occursin(tk.char, WHITESPACE)
+        if tk.char in WHITESPACE  # Ignore whitespace
+            while tk.char in WHITESPACE
                 word *= tk.char  # Read one char to `word`
                 update_chars!(tk)  # Read the next char until meet a non-whitespace char
             end
-        elseif occursin(tk.char, raw"!#") || isnothing(tk.group_token)  # Ignore comment
+        elseif tk.char in ('!', '#') || isnothing(tk.group_token)  # Ignore comment
             # Abort the iteration and build the comment token
             word = line[(tk.index):end]  # There is no '\n' at line end, no worry! Lines are already separated at line ends
             tk.char = '\n'
         elseif tk.char in ('\'', '"') || !isnothing(tk.prior_delim)  # Lex a string
             word = lexstring(tk)
-        elseif occursin(tk.char, PUNCTUATION)
+        elseif tk.char in PUNCTUATION
             word = tk.char
             update_chars!(tk)
         else
-            while !(isspace(tk.char) || occursin(tk.char, PUNCTUATION))
+            while !(isspace(tk.char) || tk.char in PUNCTUATION)
                 word *= tk.char
                 update_chars!(tk)
             end
