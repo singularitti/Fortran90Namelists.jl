@@ -14,11 +14,9 @@ julia>
 """
 module FortranToJulia
 
-using Compat: isnothing
-
 export FortranData, @f_str
 
-struct FortranData{T <: AbstractString}
+struct FortranData{T<:AbstractString}
     data::T
 end
 
@@ -26,19 +24,19 @@ macro f_str(str)
     return :(FortranData($str))
 end
 
-function Base.parse(::Type{T}, s::FortranData) where {T <: Integer}
+function Base.parse(::Type{T}, s::FortranData) where {T<:Integer}
     return parse(T, s.data)
 end
-function Base.parse(::Type{T}, s::FortranData) where {T <: Float32}
-    return parse(T, replace(lowercase(s.data), r"(?<=[^e])(?=[+-])" => "f"))
+function Base.parse(::Type{Float32}, s::FortranData)
+    return parse(Float32, replace(lowercase(s.data), r"(?<=[^e])(?=[+-])" => "f"))
 end
-function Base.parse(::Type{T}, s::FortranData) where {T <: Float64}
-    return parse(T, replace(lowercase(s.data), r"d"i => "e"))
+function Base.parse(::Type{Float64}, s::FortranData)
+    return parse(Float64, replace(lowercase(s.data), r"d"i => "e"))
 end
-function Base.parse(::Type{Complex{T}}, s::FortranData) where {T <: AbstractFloat}
+function Base.parse(::Type{Complex{T}}, s::FortranData) where {T<:AbstractFloat}
     str = s.data
     if first(str) == '(' && last(str) == ')' && length(split(str, ',')) == 2
-        re, im = split(str[2:end - 1], ',', limit = 2)
+        re, im = split(str[2:(end - 1)], ','; limit=2)
         return Complex(parse(T, re), parse(T, im))
     else
         throw(Meta.ParseError("$str must be in complex number form (x, y)."))
@@ -54,13 +52,16 @@ function Base.parse(::Type{Bool}, s::FortranData)
         throw(Meta.ParseError("$str is not a valid logical constant."))
     end
 end
-function Base.parse(::Type{T}, s::FortranData) where {T <: AbstractString}
+function Base.parse(::Type{T}, s::FortranData) where {T<:AbstractString}
     str = s.data
     m = match(r"([\"'])((?:\\\1|.)*?)\1", str)
-    isnothing(m) && throw(Meta.ParseError("$str is not a valid string!"))
-    quotation_mark, content = m.captures
-    # Replace escaped strings
-    return string(replace(content, repeat(quotation_mark, 2) => quotation_mark))
+    if m === nothing
+        throw(Meta.ParseError("$str is not a valid string!"))
+    else
+        quotation_mark, content = m.captures
+        # Replace escaped strings
+        return string(replace(content, repeat(quotation_mark, 2) => quotation_mark))
+    end
 end
 
 end
