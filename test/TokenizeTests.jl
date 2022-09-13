@@ -1,9 +1,3 @@
-#=
-TokenizeTests:
-- Julia version: 1.0
-- Author: singularitti
-- Date: 2019-08-02
-=#
 module TokenizeTests
 
 using Test

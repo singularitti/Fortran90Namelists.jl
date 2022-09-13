@@ -1,9 +1,3 @@
-#=
-Mod:
-- Julia version: 1.0
-- Author: singularitti
-- Date: 2019-07-28
-=#
 module Mod
 
 using Test
