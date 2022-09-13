@@ -16,8 +16,8 @@ module FortranToJulia
 
 export FortranData, @f_str
 
-struct FortranData{T<:AbstractString}
-    data::T
+struct FortranData
+    data::String
 end
 
 macro f_str(str)
@@ -52,7 +52,7 @@ function Base.parse(::Type{Bool}, s::FortranData)
         throw(Meta.ParseError("$str is not a valid logical constant."))
     end
 end
-function Base.parse(::Type{T}, s::FortranData) where {T<:AbstractString}
+function Base.parse(::Type{String}, s::FortranData)
     str = s.data
     m = match(r"([\"'])((?:\\\1|.)*?)\1", str)
     if m === nothing
