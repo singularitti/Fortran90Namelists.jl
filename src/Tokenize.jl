@@ -88,7 +88,7 @@ function lex(tk::Tokenizer, line)
         if tk.char in ('&', '$')
             tk.group_token = tk.char
         end
-        if !isnothing(tk.group_token) &&
+        if tk.group_token !== nothing &&
             ((tk.group_token, tk.char) in (('&', '/'), ('$', '$')))
             # A namelist ends, the value cannot be the default value (`nothing`)
             # Because it is being compared below
@@ -100,11 +100,11 @@ function lex(tk::Tokenizer, line)
                 word *= tk.char  # Read one char to `word`
                 update_chars!(tk)  # Read the next char until meet a non-whitespace char
             end
-        elseif tk.char in ('!', '#') || isnothing(tk.group_token)  # Ignore comment
+        elseif tk.char in ('!', '#') || tk.group_token === nothing  # Ignore comment
             # Abort the iteration and build the comment token
             word = line[(tk.index):end]  # There is no '\n' at line end, no worry! Lines are already separated at line ends
             tk.char = '\n'
-        elseif tk.char in ('\'', '"') || !isnothing(tk.prior_delim)  # Lex a string
+        elseif tk.char in ('\'', '"') || tk.prior_delim !== nothing  # Lex a string
             word = lexstring(tk)
         elseif tk.char in PUNCTUATION
             word = tk.char
@@ -159,7 +159,7 @@ end
 
 function next(iterable, default)
     x = iterate(iterable)
-    return isnothing(x) ? default : first(x)
+    return x === nothing ? default : first(x)
 end
 
 end
