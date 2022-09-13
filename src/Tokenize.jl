@@ -11,7 +11,7 @@ julia>
 """
 module Tokenize
 
-export Tokenizer, update_chars, lex, lex_name, lex_string, lex_numeric
+export Tokenizer, update_chars!, lex, lexstring
 
 const PUNCTUATION = [
     ' ',
