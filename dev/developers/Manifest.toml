@@ -63,7 +63,7 @@ version = "1.6.0"
 uuid = "7b1f6079-737a-58dc-b8bc-7a2ca5c1b5ee"
 
 [[deps.Fortran90Namelists]]
-git-tree-sha1 = "5799b258249173bec136f376dd45abad1b2d05d2"
+git-tree-sha1 = "4c8c1667a8948e6106905e6afca6581d9b773652"
 repo-rev = "main"
 repo-url = "https://github.com/singularitti/Fortran90Namelists.jl"
 uuid = "8fb689aa-71ff-4044-8071-0cffc910b57d"
