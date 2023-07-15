@@ -1,5 +1,9 @@
 export fparse
 
+struct ParseError <: Exception
+    msg::String
+end
+
 fparse(::Type{T}, str::AbstractString) where {T<:Integer} = parse(T, str.data)
 function fparse(::Type{Float32}, str::AbstractString)
     return parse(Float32, replace(lowercase(str.data), r"(?<=[^e])(?=[+-])" => "f"))
@@ -13,7 +17,7 @@ function fparse(::Type{Complex{T}}, str::AbstractString) where {T<:AbstractFloat
         re, im = split(str[2:(end - 1)], ','; limit=2)
         return Complex(parse(T, re), parse(T, im))
     else
-        throw(Meta.ParseError("$str must be in complex number form (x, y)."))
+        throw(ParseError("$str must be in complex number form (x, y)."))
     end
 end
 function fparse(::Type{Bool}, str::AbstractString)
@@ -23,14 +27,14 @@ function fparse(::Type{Bool}, str::AbstractString)
     elseif str in (".false.", ".f.", "false", 'f')
         return false
     else
-        throw(Meta.ParseError("$str is not a valid logical constant."))
+        throw(ParseError("$str is not a valid logical constant."))
     end
 end
 function fparse(::Type{String}, str::AbstractString)
     str = str.data
     m = match(r"([\"'])((?:\\\1|.)*?)\1", str)
     if m === nothing
-        throw(Meta.ParseError("$str is not a valid string!"))
+        throw(ParseError("$str is not a valid string!"))
     else
         quotation_mark, content = m.captures
         # Replace escaped strings
