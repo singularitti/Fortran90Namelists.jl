@@ -4,39 +4,35 @@ struct ParseError <: Exception
     msg::String
 end
 
-fparse(::Type{T}, str::AbstractString) where {T<:Integer} = parse(T, str.data)
-function fparse(::Type{Float32}, str::AbstractString)
-    return parse(Float32, replace(lowercase(str.data), r"(?<=[^e])(?=[+-])" => "f"))
-end
-function fparse(::Type{Float64}, str::AbstractString)
-    return parse(Float64, replace(lowercase(str.data), r"d"i => "e"))
-end
+fparse(::Type{T}, str::AbstractString) where {T<:Integer} = parse(T, str)
+fparse(::Type{Float32}, str::AbstractString) =
+    parse(Float32, replace(lowercase(str), r"(?<=[^e])(?=[+-])" => "f"))
+fparse(::Type{Float64}, str::AbstractString) =
+    parse(Float64, replace(lowercase(str), r"d"i => "e"))
 function fparse(::Type{Complex{T}}, str::AbstractString) where {T<:AbstractFloat}
-    str = str.data
     if first(str) == '(' && last(str) == ')' && length(split(str, ',')) == 2
         re, im = split(str[2:(end - 1)], ','; limit=2)
         return Complex(parse(T, re), parse(T, im))
     else
-        throw(ParseError("$str must be in complex number form (x, y)."))
+        throw(ParseError("`$str` must be in complex number form (x, y)."))
     end
 end
 function fparse(::Type{Bool}, str::AbstractString)
-    str = lowercase(str.data)
-    if str in (".true.", ".t.", "true", 't')
+    str = lowercase(str)
+    if str in (".true.", ".t.", "true")
         return true
-    elseif str in (".false.", ".f.", "false", 'f')
+    elseif str in (".false.", ".f.", "false")
         return false
     else
-        throw(ParseError("$str is not a valid logical constant."))
+        throw(ParseError("`$str` is not a valid logical constant."))
     end
 end
 function fparse(::Type{String}, str::AbstractString)
-    str = str.data
-    m = match(r"([\"'])((?:\\\1|.)*?)\1", str)
-    if m === nothing
-        throw(ParseError("$str is not a valid string!"))
+    matched = match(r"([\"'])((?:\\\1|.)*?)\1", str)
+    if matched === nothing
+        throw(ParseError("`$str` is not a valid string!"))
     else
-        quotation_mark, content = m.captures
+        quotation_mark, content = matched.captures
         # Replace escaped strings
         return string(replace(content, repeat(quotation_mark, 2) => quotation_mark))
     end
