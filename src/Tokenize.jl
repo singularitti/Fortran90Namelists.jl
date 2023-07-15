@@ -1,16 +1,3 @@
-"""
-# module Tokenize
-
-
-
-# Examples
-
-```jldoctest
-julia>
-```
-"""
-module Tokenize
-
 export Tokenizer, update_chars!, lex, lexstring
 
 const PUNCTUATION = [
@@ -160,6 +147,4 @@ end
 function next(iterable, default)
     x = iterate(iterable)
     return x === nothing ? default : first(x)
-end
-
 end
