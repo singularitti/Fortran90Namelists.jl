@@ -1,9 +1,9 @@
-export to_fortran
+export fstring
 
-function to_fortran(v::Integer)
+function fstring(v::Integer)
     return FortranData(string(v))
 end
-function to_fortran(v::Float32, scientific=false)
+function fstring(v::Float32, scientific=false)
     str = string(v)
     if scientific
         return FortranData(replace(str, r"f"i => "e"))
@@ -11,7 +11,7 @@ function to_fortran(v::Float32, scientific=false)
         return FortranData(str)
     end
 end
-function to_fortran(v::Float64, scientific=false)
+function fstring(v::Float64, scientific=false)
     str = string(v)
     if scientific
         return FortranData(replace(str, r"e"i => "d"))
@@ -19,9 +19,9 @@ function to_fortran(v::Float64, scientific=false)
         return FortranData(string(v))
     end
 end
-function to_fortran(v::Bool)
+function fstring(v::Bool)
     return v ? FortranData(".true.") : FortranData(".false.")
 end
-function to_fortran(v::AbstractString)
+function fstring(v::AbstractString)
     return FortranData("'$v'")
 end
