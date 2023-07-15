@@ -1,27 +1,14 @@
 export fstring
 
-function fstring(v::Integer)
-    return FortranData(string(v))
+fstring(number::Integer) = string(number)
+fstring(number::Float32) = string(number)
+function fstring(number::Float64)
+    str = string(number)
+    return replace(str, r"e"i => "d")
 end
-function fstring(v::Float32, scientific=false)
-    str = string(v)
-    if scientific
-        return FortranData(replace(str, r"f"i => "e"))
-    else
-        return FortranData(str)
-    end
+fstring(bool::Bool) = bool ? ".true." : ".false."
+function fstring(str::AbstractString)
+    escaped_str = replace(str, "\"" => "\"\"")  # escape double quotes within the string
+    return "\"$escaped_str\""
 end
-function fstring(v::Float64, scientific=false)
-    str = string(v)
-    if scientific
-        return FortranData(replace(str, r"e"i => "d"))
-    else
-        return FortranData(string(v))
-    end
-end
-function fstring(v::Bool)
-    return v ? FortranData(".true.") : FortranData(".false.")
-end
-function fstring(v::AbstractString)
-    return FortranData("'$v'")
-end
+fstring(array::AbstractVector) = "(/" * join(fstring.(array), ", ") * "/)"
