@@ -1,19 +1,3 @@
-"""
-# module FortranToJulia
-
-Conversion of Fortran values (as strings) to equivalent Julia values.
-
-The functions in this module are used to convert the string representation of
-the values of basic Fortran data types into equivalent Julia values.
-
-# Examples
-
-```jldoctest
-julia>
-```
-"""
-module FortranToJulia
-
 export FortranData, @f_str
 
 struct FortranData
@@ -62,6 +46,4 @@ function Base.parse(::Type{String}, s::FortranData)
         # Replace escaped strings
         return string(replace(content, repeat(quotation_mark, 2) => quotation_mark))
     end
-end
-
 end

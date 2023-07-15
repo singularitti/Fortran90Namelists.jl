@@ -1,18 +1,3 @@
-"""
-# module JuliaToFortran
-
-
-
-# Examples
-
-```jldoctest
-julia>
-```
-"""
-module JuliaToFortran
-
-using Fortran90Namelists.FortranToJulia
-
 export to_fortran
 
 function to_fortran(v::Integer)
@@ -39,6 +24,4 @@ function to_fortran(v::Bool)
 end
 function to_fortran(v::AbstractString)
     return FortranData("'$v'")
-end
-
 end
