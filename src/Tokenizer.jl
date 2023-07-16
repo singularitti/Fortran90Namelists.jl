@@ -1,4 +1,4 @@
-export Tokenizer, update_chars!, lex!, lexstring!
+export Tokenizer, update!, lex!, lexstring!
 
 const PUNCTUATION = (
     ' ',
