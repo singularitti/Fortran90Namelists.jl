@@ -113,23 +113,23 @@ end
 
 Tokenize a Fortran string.
 """
-function lexstring!(tk::Tokenizer)
+function lexstring!(tk::Tokenizer, chars::Iterators.Stateful)
     word = ""
-    if tk.prior_delim !== nothing  # A previous quotation mark presents
+    if tk.prior_delim !== '\0'  # A previous quotation mark presents
         delim = tk.prior_delim  # Read until `delim`
-        tk.prior_delim = nothing
+        tk.prior_delim = '\0'
     else
         delim = tk.char  # No previous quotation mark presents
         word *= tk.char  # Read this character
-        update_chars!(tk)
+        update!(tk, chars)
     end
     while true
         if tk.char == delim
             # Check for escaped delimiters
-            update_chars!(tk)
+            update!(tk, chars)
             if tk.char == delim
                 word *= delim^2
-                update_chars!(tk)
+                update!(tk, chars)
             else
                 word *= delim
                 break
@@ -139,7 +139,7 @@ function lexstring!(tk::Tokenizer)
             break
         else
             word *= tk.char
-            update_chars!(tk)
+            update!(tk, chars)
         end
     end
     return word
