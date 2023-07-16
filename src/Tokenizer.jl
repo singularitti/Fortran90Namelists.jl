@@ -37,22 +37,13 @@ const WHITESPACE = (' ', '\t', '\r', '\v', '\f')  # '\v' => '\x0b', '\f' => '\x0
 const COMMENT = ('!', '#')
 
 mutable struct Tokenizer
-    chars::Iterators.Stateful
     index::Int64
-    prior_char::Union{Nothing,AbstractChar}
-    char::Union{Nothing,AbstractChar}
-    prior_delim::Union{Nothing,AbstractChar}
-    group_token::Union{Nothing,AbstractChar}  # Set to true if inside a namelist group
-end
-function Tokenizer(;
-    chars=nothing,
-    index=0,
-    prior_char=nothing,
-    char=nothing,
-    prior_delim=nothing,
-    group_token=nothing,
-)
-    return Tokenizer(chars, index, prior_char, char, prior_delim, group_token)
+    prior_char::Char
+    char::Char
+    prior_delim::Char
+    group_token::Char
+    Tokenizer(index=0, prior_char='\0', char='\0', prior_delim='\0', group_token='\0') =
+        new(index, prior_char, char, prior_delim, group_token)
 end
 
 """
