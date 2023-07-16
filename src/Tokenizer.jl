@@ -1,10 +1,7 @@
 export Tokenizer, update!, lex!, lexstring!
 
 const PUNCTUATION = (
-    ' ',
     '=',
-    '+',
-    '-',
     '*',
     '/',
     '\\',
@@ -15,18 +12,14 @@ const PUNCTUATION = (
     '{',
     '}',
     ',',
-    '.',
     ':',
     ';',
-    '!',
-    '"',
     '%',
     '&',
     '~',
     '<',
     '>',
     '?',
-    ''',
     '`',
     '|',
     '$',
@@ -34,7 +27,6 @@ const PUNCTUATION = (
     '@',
 )
 const WHITESPACE = (' ', '\t', '\r', '\v', '\f')  # '\v' => '\x0b', '\f' => '\x0c' in Python
-const COMMENT = ('!', '#')
 
 mutable struct Tokenizer
     index::Int64
