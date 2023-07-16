@@ -28,6 +28,15 @@ const PUNCTUATION = (
 )
 const WHITESPACE = (' ', '\t', '\r', '\v', '\f')  # '\v' => '\x0b', '\f' => '\x0c' in Python
 
+"""
+    Tokenizer(index=0, prior_char='\0', char='\0', prior_delim='\0', group_token='\0')
+
+A mutable struct for tokenizing input string.
+
+It maintains state information about the current position in the string, the current
+character, the previous character, the previous delimiter, and the group token if inside a
+namelist group.
+"""
 mutable struct Tokenizer
     index::Int64
     prior_char::Char
@@ -39,9 +48,11 @@ mutable struct Tokenizer
 end
 
 """
-    update_chars(tk::Tokenizer)
+    update!(tk::Tokenizer, chars::Iterators.Stateful)
 
-Update the current charters in the tokenizer.
+Update the current characters in the tokenizer, `tk`.
+
+This includes updating both the prior and current characters, and incrementing the index.
 """
 function update!(tk::Tokenizer, chars::Iterators.Stateful)
     tk.prior_char, tk.char = tk.char, next(chars, '\n')
@@ -49,6 +60,14 @@ function update!(tk::Tokenizer, chars::Iterators.Stateful)
     return tk
 end
 
+"""
+    tokenize!(tk::Tokenizer, line)
+
+Tokenize the input `line` using the tokenizer `tk`.
+
+The function updates the state of `tk` to reflect the position within `line` and returns a
+list of tokens.
+"""
 function tokenize!(tk::Tokenizer, line)
     tokens = String[]
     tk.index = 0   # Bogus value to ensure `index` = 1 after the first iteration
@@ -93,9 +112,13 @@ function tokenize!(tk::Tokenizer, line)
 end
 
 """
-    lexstring(tk::Tokenizer)
+    tokenizestr!(tk::Tokenizer, chars::Iterators.Stateful)
 
-Tokenize a Fortran string.
+Tokenizes a Fortran string.
+
+This function treats everything between a pair of delimiters (such as quotation marks) as a
+string. It respects escaped delimiters and updates the state of the tokenizer `tk` to
+reflect the position within the string.
 """
 function tokenizestr!(tk::Tokenizer, chars::Iterators.Stateful)
     word = ""
@@ -129,6 +152,13 @@ function tokenizestr!(tk::Tokenizer, chars::Iterators.Stateful)
     return word
 end
 
+"""
+    next(chars::Iterators.Stateful, default)
+
+Iterate over `chars`.
+
+If there are no more items, returns `default`.
+"""
 function next(chars::Iterators.Stateful, default)
     x = iterate(chars)
     return x === nothing ? default : first(x)
