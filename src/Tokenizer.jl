@@ -60,8 +60,8 @@ end
 
 Update the current charters in the tokenizer.
 """
-function update_chars!(tk::Tokenizer)
-    tk.prior_char, tk.char = tk.char, next(tk.chars, '\n')
+function update!(tk::Tokenizer, chars::Iterators.Stateful)
+    tk.prior_char, tk.char = tk.char, next(chars, '\n')
     tk.index += 1
     return tk
 end
