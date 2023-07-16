@@ -48,19 +48,6 @@ mutable struct Tokenizer
 end
 
 """
-    update!(tk::Tokenizer, chars::Iterators.Stateful)
-
-Update the current characters in the tokenizer, `tk`.
-
-This includes updating both the prior and current characters, and incrementing the index.
-"""
-function update!(tk::Tokenizer, chars::Iterators.Stateful)
-    tk.prior_char, tk.char = tk.char, next(chars, '\n')
-    tk.index += 1
-    return tk
-end
-
-"""
     tokenize!(tk::Tokenizer, line)
 
 Tokenize the input `line` using the tokenizer `tk`.
@@ -150,6 +137,19 @@ function tokenizestr!(tk::Tokenizer, chars::Iterators.Stateful)
         end
     end
     return word
+end
+
+"""
+    update!(tk::Tokenizer, chars::Iterators.Stateful)
+
+Update the current characters in the tokenizer, `tk`.
+
+This includes updating both the prior and current characters, and incrementing the index.
+"""
+function update!(tk::Tokenizer, chars::Iterators.Stateful)
+    tk.prior_char, tk.char = tk.char, next(chars, '\n')
+    tk.index += 1
+    return tk
 end
 
 """
