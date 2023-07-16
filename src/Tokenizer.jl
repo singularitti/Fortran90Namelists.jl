@@ -1,6 +1,6 @@
 export Tokenizer, update_chars!, lex!, lexstring!
 
-const PUNCTUATION = [
+const PUNCTUATION = (
     ' ',
     '=',
     '+',
@@ -32,8 +32,9 @@ const PUNCTUATION = [
     '$',
     '#',
     '@',
-]
-const WHITESPACE = [' ', '\t', '\r', '\v', '\f']  # '\v' => '\x0b', '\f' => '\x0c' in Python
+)
+const WHITESPACE = (' ', '\t', '\r', '\v', '\f')  # '\v' => '\x0b', '\f' => '\x0c' in Python
+const COMMENT = ('!', '#')
 
 mutable struct Tokenizer
     chars::Iterators.Stateful
