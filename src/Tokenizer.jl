@@ -145,7 +145,7 @@ function lexstring!(tk::Tokenizer)
     return word
 end
 
-function next(iterable, default)
-    x = iterate(iterable)
+function next(chars::Iterators.Stateful, default)
+    x = iterate(chars)
     return x === nothing ? default : first(x)
 end
