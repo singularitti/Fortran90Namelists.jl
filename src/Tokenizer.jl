@@ -1,4 +1,4 @@
-export Tokenizer, update!, lex!, lexstring!
+export Tokenizer, update!, tokenize!, tokenizestr!
 
 const PUNCTUATION = (
     '=',
@@ -49,7 +49,7 @@ function update!(tk::Tokenizer, chars::Iterators.Stateful)
     return tk
 end
 
-function lex!(tk::Tokenizer, line)
+function tokenize!(tk::Tokenizer, line)
     tokens = String[]
     tk.index = 0   # Bogus value to ensure `index` = 1 after the first iteration
     chars = Iterators.Stateful(line)
@@ -77,7 +77,7 @@ function lex!(tk::Tokenizer, line)
             word = line[(tk.index):end]  # There's no '\n' at line end, no worry! Lines are already separated at line ends
             tk.char = '\n'
         elseif tk.char in ('\'', '"') || tk.prior_delim !== '\0'
-            word = lexstring!(tk, chars)
+            word = tokenizestr!(tk, chars)
         elseif tk.char in PUNCTUATION
             word = tk.char
             update!(tk, chars)
@@ -97,7 +97,7 @@ end
 
 Tokenize a Fortran string.
 """
-function lexstring!(tk::Tokenizer, chars::Iterators.Stateful)
+function tokenizestr!(tk::Tokenizer, chars::Iterators.Stateful)
     word = ""
     if tk.prior_delim !== '\0'  # A previous quotation mark presents
         delim = tk.prior_delim  # Read until `delim`
