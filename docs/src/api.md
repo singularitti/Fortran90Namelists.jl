@@ -13,7 +13,7 @@ Depth = 2
 
 ```@docs
 Tokenizer
-lex!
+tokenize!
 ```
 
 ## Private API
@@ -24,7 +24,7 @@ are primarily meant for internal use within the package. Using them directly may
 unexpected errors or compatibility issues in your code.
 
 ```@docs
-lexstring!
+tokenizestr!
 update!
 next
 ```
