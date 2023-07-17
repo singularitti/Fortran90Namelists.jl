@@ -23,10 +23,10 @@ const PUNCTUATION = (
     '`',
     '|',
     '$',
-    '#',
     '@',
 )
 const WHITESPACE = (' ', '\t', '\r', '\v', '\f')  # '\v' => '\x0b', '\f' => '\x0c' in Python
+const COMMENT_IDENTIFIERS = ('!', '#')
 
 """
     Tokenizer(index=0, prior_char='\0', char='\0', prior_delim='\0', group_token='\0')
@@ -77,7 +77,7 @@ function tokenize!(tk::Tokenizer, line)
                 word *= tk.char  # Read one character to `word`
                 update!(tk, chars)  # Read the next character until a non-whitespace character is encountered
             end
-        elseif tk.char == '!' || tk.group_token === '\0'  # Ignore comment
+        elseif tk.char in COMMENT_IDENTIFIERS || tk.group_token === '\0'  # Ignore comment
             # If we encounter a comment character, or we are not inside a namelist group,
             # we consider everything that follows as part of the comment.
             word = line[(tk.index):end]  # There's no '\n' at line end, no worry! Lines are already separated at line ends
