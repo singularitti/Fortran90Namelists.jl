@@ -1,16 +1,12 @@
 export lex!, lex
 
-@enum LexemeType begin
+@enum Lexeme begin
     BEGIN
     END
-    NAME
+    GROUP_NAME
     VARIABLE
     EQUALS
     VALUE
-    INTEGER
-    FLOAT
-    COMPLEX
-    LOGICAL
     STRING
     OPERATOR
     COMMA
