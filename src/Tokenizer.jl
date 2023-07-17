@@ -85,7 +85,7 @@ function tokenize!(tk::Tokenizer, line)
         elseif tk.char in ('\'', '"') || tk.prior_delim !== '\0'
             word = tokenizestr!(tk, chars)
         elseif tk.char in PUNCTUATION
-            word = tk.char
+            word *= tk.char
             update!(tk, chars)
         else
             while !(isspace(tk.char) || tk.char in PUNCTUATION)
@@ -93,7 +93,7 @@ function tokenize!(tk::Tokenizer, line)
                 update!(tk, chars)
             end
         end
-        push!(tokens, string(word))
+        push!(tokens, word)
     end
     return tokens
 end
