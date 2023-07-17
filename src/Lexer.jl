@@ -6,6 +6,8 @@ export lex!
     GROUP_NAME
     VARIABLE
     EQUALS
+    ARRAY
+    DICT
     VALUE
     STRING
     OPERATOR
@@ -48,24 +50,37 @@ function lex!(lx::Tokenizer, line)
         elseif lx.char in PUNCTUATION
             word *= lx.char
             update!(lx, chars)
-            push!(lexemes, (
-                word,
-                if word == "="
-                    EQUALS
-                elseif word == ","
-                    COMMA
-                elseif word in PUNCTUATION
-                    OPERATOR
-                else
-                    error("unsupported punctuation: `$word`!")
-                end,
-            ))
+            if word == "%"
+                push!(lexemes, (word, DICT))
+            else
+                push!(lexemes, (
+                    word,
+                    if word == "="
+                        EQUALS
+                    elseif word == ","
+                        COMMA
+                    elseif word in PUNCTUATION
+                        OPERATOR
+                    else
+                        error("unsupported punctuation: `$word`!")
+                    end,
+                ))
+            end
         else
             while !(isspace(lx.char) || lx.char in PUNCTUATION)
                 word *= lx.char
                 update!(lx, chars)
             end
-            if isvalidname(word)
+            if lx.char == '('
+                lx.char = '\0'  # Consume the bracket
+                while lx.char != ')'
+                    word *= lx.char
+                    update!(lx, chars)
+                end
+                word *= lx.char  # Include the closing bracket
+                update!(lx, chars)
+                push!(lexemes, (word, ARRAY))
+            elseif isvalidname(word)
                 if !isempty(lexemes) && last(lexemes)[2] == BEGIN
                     push!(lexemes, (word, GROUP_NAME))
                 else
