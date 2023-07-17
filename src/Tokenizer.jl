@@ -152,13 +152,6 @@ function update!(tk::Tokenizer, chars::Iterators.Stateful)
     return tk
 end
 
-"""
-    next(chars::Iterators.Stateful, default)
-
-Iterate over `chars`.
-
-If there are no more items, returns `default`.
-"""
 function next(chars::Iterators.Stateful, default)
     x = iterate(chars)
     return x === nothing ? default : first(x)
