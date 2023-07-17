@@ -37,7 +37,7 @@
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/bcast.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -123,7 +123,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/bcast_target.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -146,7 +146,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/string.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -156,7 +156,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/dollar.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -166,7 +166,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/dollar_target.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -182,7 +182,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/comment_alt.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -210,7 +210,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/comment_patch.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -226,7 +226,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/comment_target.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -254,7 +254,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/comment.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -287,7 +287,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/default_index.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -297,7 +297,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/empty.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -315,7 +315,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/ext_token.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -329,7 +329,7 @@ end
 #     tk = Tokenizer()
 #     open(joinpath(dirname(@__FILE__), "data/extern_cmt.nml"), "r") do io
 #         for (i, line) in enumerate(eachline(io))
-#             @test lex!(tk, line) == benchmark[i]
+#             @test tokenize!(tk, line) == benchmark[i]
 #         end
 #     end
 # end
@@ -362,7 +362,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/float.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -391,7 +391,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/float_target.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -420,7 +420,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/float_format.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -499,7 +499,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/global_index.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -522,7 +522,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/grp_repeat.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -548,7 +548,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/grp_repeat_target.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -580,7 +580,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/index_bad_end.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -594,7 +594,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/index_bad_start.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -628,7 +628,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/index_bad_stride.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -642,7 +642,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/index_bad.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -675,7 +675,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/index_empty_end.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -708,7 +708,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/index_empty_stride.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -722,7 +722,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/index_empty.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -756,7 +756,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/index_zero_stride.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -775,7 +775,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/logical_repr.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -794,7 +794,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/logical.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -829,7 +829,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/multidim_ooo_target.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -847,7 +847,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/multidim_ooo.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -1254,7 +1254,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/multidim_space.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -1604,7 +1604,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/multidim_target.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -1871,7 +1871,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/multidim.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -2029,7 +2029,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/multiline_colwidth.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -2197,7 +2197,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/multiline_index.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
@@ -2351,7 +2351,7 @@ end
     tk = Tokenizer()
     open(joinpath(dirname(@__FILE__), "data/multiline.nml"), "r") do io
         for (i, line) in enumerate(eachline(io))
-            @test lex!(tk, line) == benchmark[i]
+            @test tokenize!(tk, line) == benchmark[i]
         end
     end
 end
