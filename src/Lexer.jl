@@ -1,6 +1,22 @@
 export Lexer, lex!, lex
 
-@enum LexemeType BEGIN END NAME VARIABLE EQUALS VALUE COMMA SPACE COMMENT
+@enum LexemeType begin
+    BEGIN
+    END
+    NAME
+    VARIABLE
+    EQUALS
+    VALUE
+    INTEGER
+    FLOAT
+    COMPLEX
+    LOGICAL
+    STRING
+    OPERATOR
+    COMMA
+    SPACE
+    COMMENT
+end
 
 mutable struct Lexer
     index::Int64
