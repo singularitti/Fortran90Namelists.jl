@@ -23,10 +23,10 @@ const PUNCTUATION = (
     '`',
     '|',
     '$',
-    '#',
     '@',
 )
 const WHITESPACE = (' ', '\t', '\r', '\v', '\f')  # '\v' => '\x0b', '\f' => '\x0c' in Python
+const COMMENT_IDENTIFIERS = ('!', '#')
 
 """
     Tokenizer(index=0, prior_char='\0', char='\0', prior_delim='\0', group_token='\0')
@@ -77,7 +77,7 @@ function tokenize!(tk::Tokenizer, line)
                 word *= tk.char  # Read one character to `word`
                 update!(tk, chars)  # Read the next character until a non-whitespace character is encountered
             end
-        elseif tk.char == '!' || tk.group_token === '\0'  # Ignore comment
+        elseif tk.char in COMMENT_IDENTIFIERS || tk.group_token === '\0'  # Ignore comment
             # If we encounter a comment character, or we are not inside a namelist group,
             # we consider everything that follows as part of the comment.
             word = line[(tk.index):end]  # There's no '\n' at line end, no worry! Lines are already separated at line ends
@@ -85,7 +85,7 @@ function tokenize!(tk::Tokenizer, line)
         elseif tk.char in ('\'', '"') || tk.prior_delim !== '\0'
             word = tokenizestr!(tk, chars)
         elseif tk.char in PUNCTUATION
-            word = tk.char
+            word *= tk.char
             update!(tk, chars)
         else
             while !(isspace(tk.char) || tk.char in PUNCTUATION)
@@ -93,7 +93,7 @@ function tokenize!(tk::Tokenizer, line)
                 update!(tk, chars)
             end
         end
-        push!(tokens, string(word))
+        push!(tokens, word)
     end
     return tokens
 end
@@ -107,7 +107,7 @@ This function treats everything between a pair of delimiters (such as quotation 
 string. It respects escaped delimiters and updates the state of the tokenizer `tk` to
 reflect the position within the string.
 """
-function tokenizestr!(tk::Tokenizer, chars::Iterators.Stateful)
+function tokenizestr!(tk, chars)
     word = ""
     if tk.prior_delim !== '\0'  # A previous quotation mark presents
         delim = tk.prior_delim  # Read until `delim`
@@ -146,13 +146,13 @@ Update the current characters in the tokenizer, `tk`.
 
 This includes updating both the prior and current characters, and incrementing the index.
 """
-function update!(tk::Tokenizer, chars::Iterators.Stateful)
+function update!(tk, chars)
     tk.prior_char, tk.char = tk.char, next(chars, '\n')
     tk.index += 1
     return tk
 end
 
-function next(chars::Iterators.Stateful, default)
+function next(chars, default)
     x = iterate(chars)
     return x === nothing ? default : first(x)
 end
