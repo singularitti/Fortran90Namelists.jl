@@ -6,9 +6,9 @@ end
 
 fparse(::Type{T}, str::AbstractString) where {T<:Integer} = Base.parse(T, str)
 fparse(::Type{Float32}, str::AbstractString) =
-    Base.parse(Float32, replace(lowercase(str), r"(?<=[^e])(?=[+-])" => "f"))
+    Base.parse(Float32, replace(lowercase(str), r"(?<=[^E])(?=[+-])"i => "f"))
 fparse(::Type{Float64}, str::AbstractString) =
-    Base.parse(Float64, replace(lowercase(str), r"d"i => "e"))
+    Base.parse(Float64, replace(lowercase(str), r"D"i => "e"))
 function fparse(::Type{Complex{T}}, str::AbstractString) where {T<:AbstractFloat}
     if first(str) == '(' && last(str) == ')' && length(split(str, ',')) == 2
         re, im = split(str[2:(end - 1)], ','; limit=2)
