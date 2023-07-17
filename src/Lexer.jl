@@ -15,7 +15,7 @@ export lex!, lex
 end
 
 function lex!(lx::Tokenizer, line)
-    lexemes = Tuple{String,LexemeType}[]
+    lexemes = Tuple{String,Lexeme}[]
     lx.index = 0
     chars = Iterators.Stateful(line)
     update!(lx, chars)
@@ -38,13 +38,13 @@ function lex!(lx::Tokenizer, line)
                 update!(lx, chars)
             end
             push!(lexemes, (word, SPACE))
-        elseif lx.char == '!' || lx.group_token === '\0'
+        elseif lx.char in COMMENT_IDENTIFIERS || lx.group_token === '\0'
             word = line[(lx.index):end]
             lx.char = '\n'
             push!(lexemes, (word, COMMENT))
         elseif lx.char in ('\'', '"') || lx.prior_delim !== '\0'
             word = tokenizestr!(lx, chars)
-            push!(lexemes, (word, VALUE))  # String tokens are treated as values
+            push!(lexemes, (word, STRING))
         elseif lx.char in PUNCTUATION
             word *= lx.char
             update!(lx, chars)
@@ -54,6 +54,8 @@ function lex!(lx::Tokenizer, line)
                     EQUALS
                 elseif word == ","
                     COMMA
+                elseif word in PUNCTUATION
+                    OPERATOR
                 else
                     error("unsupported punctuation: `$word`!")
                 end,
@@ -65,7 +67,7 @@ function lex!(lx::Tokenizer, line)
             end
             if isvalidname(word)
                 if !isempty(lexemes) && last(lexemes)[2] == BEGIN
-                    push!(lexemes, (word, NAME))
+                    push!(lexemes, (word, GROUP_NAME))
                 else
                     push!(lexemes, (word, VARIABLE))
                 end
