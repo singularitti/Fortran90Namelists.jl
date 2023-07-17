@@ -4,15 +4,15 @@ struct ParseError <: Exception
     msg::String
 end
 
-fparse(::Type{T}, str::AbstractString) where {T<:Integer} = parse(T, str)
+fparse(::Type{T}, str::AbstractString) where {T<:Integer} = Base.parse(T, str)
 fparse(::Type{Float32}, str::AbstractString) =
-    parse(Float32, replace(lowercase(str), r"(?<=[^e])(?=[+-])" => "f"))
+    Base.parse(Float32, replace(lowercase(str), r"(?<=[^e])(?=[+-])" => "f"))
 fparse(::Type{Float64}, str::AbstractString) =
-    parse(Float64, replace(lowercase(str), r"d"i => "e"))
+    Base.parse(Float64, replace(lowercase(str), r"d"i => "e"))
 function fparse(::Type{Complex{T}}, str::AbstractString) where {T<:AbstractFloat}
     if first(str) == '(' && last(str) == ')' && length(split(str, ',')) == 2
         re, im = split(str[2:(end - 1)], ','; limit=2)
-        return Complex(parse(T, re), parse(T, im))
+        return Complex(Base.parse(T, re), Base.parse(T, im))
     else
         throw(ParseError("`$str` must be in complex number form (x, y)."))
     end
