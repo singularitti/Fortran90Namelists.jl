@@ -1,4 +1,4 @@
-export Lexer, lex!, lex
+export lex!, lex
 
 @enum LexemeType begin
     BEGIN
@@ -18,17 +18,7 @@ export Lexer, lex!, lex
     COMMENT
 end
 
-mutable struct Lexer
-    index::Int64
-    prior_char::Char
-    char::Char
-    prior_delim::Char
-    group_token::Char
-    Lexer(index=0, prior_char='\0', char='\0', prior_delim='\0', group_token='\0') =
-        new(index, prior_char, char, prior_delim, group_token)
-end
-
-function lex!(lx::Lexer, line)
+function lex!(lx::Tokenizer, line)
     lexemes = Tuple{String,LexemeType}[]
     lx.index = 0
     chars = Iterators.Stateful(line)
@@ -119,12 +109,6 @@ function lex(tokens)
         end
     end
     return lexemes
-end
-
-function update!(lx::Lexer, chars::Iterators.Stateful)
-    lx.prior_char, lx.char = lx.char, next(chars, '\n')
-    lx.index += 1
-    return lx
 end
 
 function isvalidname(name::AbstractString)
