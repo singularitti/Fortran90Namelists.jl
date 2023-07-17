@@ -18,15 +18,19 @@ function lex!(lx::Lexer, line)
     chars = Iterators.Stateful(line)
     update!(lx, chars)
     while lx.char != '\n'
+        word = ""
         if (lx.group_token == '&' && lx.char == '/') ||
             (lx.group_token == '$' && lx.char == '$')
             lx.group_token = '\0'
-        end
-        if lx.char in ('&', '$')
+            word *= lx.char
+            update!(lx, chars)
+            push!(lexemes, (word, END))
+        elseif lx.char in ('&', '$')
             lx.group_token = lx.char
-        end
-        word = ""
-        if lx.char in WHITESPACE
+            word *= lx.char
+            update!(lx, chars)
+            push!(lexemes, (word, BEGIN))
+        elseif lx.char in WHITESPACE
             while lx.char in WHITESPACE
                 word *= lx.char
                 update!(lx, chars)
@@ -46,12 +50,10 @@ function lex!(lx::Lexer, line)
                 word,
                 if word == "="
                     EQUALS
-                elseif word in ("&", raw"$")
-                    BEGIN
-                elseif word in ("/", raw"$")
-                    END
-                else
+                elseif word == ","
                     COMMA
+                else
+                    error("unsupported punctuation: `$word`!")
                 end,
             ))
         else
