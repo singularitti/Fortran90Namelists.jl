@@ -107,7 +107,7 @@ This function treats everything between a pair of delimiters (such as quotation 
 string. It respects escaped delimiters and updates the state of the tokenizer `tk` to
 reflect the position within the string.
 """
-function tokenizestr!(tk::Tokenizer, chars::Iterators.Stateful)
+function tokenizestr!(tk, chars)
     word = ""
     if tk.prior_delim !== '\0'  # A previous quotation mark presents
         delim = tk.prior_delim  # Read until `delim`
@@ -146,13 +146,13 @@ Update the current characters in the tokenizer, `tk`.
 
 This includes updating both the prior and current characters, and incrementing the index.
 """
-function update!(tk::Tokenizer, chars::Iterators.Stateful)
+function update!(tk, chars)
     tk.prior_char, tk.char = tk.char, next(chars, '\n')
     tk.index += 1
     return tk
 end
 
-function next(chars::Iterators.Stateful, default)
+function next(chars, default)
     x = iterate(chars)
     return x === nothing ? default : first(x)
 end
