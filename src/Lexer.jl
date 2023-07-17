@@ -1,6 +1,77 @@
-export lex
+export Lexer, lex!, lex
 
 @enum LexemeType BEGIN END NAME VARIABLE EQUALS VALUE COMMA SPACE COMMENT
+
+mutable struct Lexer
+    index::Int64
+    prior_char::Char
+    char::Char
+    prior_delim::Char
+    group_token::Char
+    Lexer(index=0, prior_char='\0', char='\0', prior_delim='\0', group_token='\0') =
+        new(index, prior_char, char, prior_delim, group_token)
+end
+
+function lex!(lx::Lexer, line)
+    lexemes = Tuple{String,LexemeType}[]
+    lx.index = 0
+    chars = Iterators.Stateful(line)
+    update!(lx, chars)
+    while lx.char != '\n'
+        if (lx.group_token == '&' && lx.char == '/') ||
+            (lx.group_token == '$' && lx.char == '$')
+            lx.group_token = '\0'
+        end
+        if lx.char in ('&', '$')
+            lx.group_token = lx.char
+        end
+        word = ""
+        if lx.char in WHITESPACE
+            while lx.char in WHITESPACE
+                word *= lx.char
+                update!(lx, chars)
+            end
+            push!(lexemes, (word, SPACE))
+        elseif lx.char == '!' || lx.group_token === '\0'
+            word = line[(lx.index):end]
+            lx.char = '\n'
+            push!(lexemes, (word, COMMENT))
+        elseif lx.char in ('\'', '"') || lx.prior_delim !== '\0'
+            word = tokenizestr!(lx, chars)
+            push!(lexemes, (word, VALUE))  # String tokens are treated as values
+        elseif lx.char in PUNCTUATION
+            word *= lx.char
+            update!(lx, chars)
+            push!(lexemes, (
+                word,
+                if word == "="
+                    EQUALS
+                elseif word in ("&", raw"$")
+                    BEGIN
+                elseif word in ("/", raw"$")
+                    END
+                else
+                    COMMA
+                end,
+            ))
+        else
+            while !(isspace(lx.char) || lx.char in PUNCTUATION)
+                word *= lx.char
+                update!(lx, chars)
+            end
+            if isvalidname(word)
+                if !isempty(lexemes) && last(lexemes)[2] == BEGIN
+                    push!(lexemes, (word, NAME))
+                else
+                    push!(lexemes, (word, VARIABLE))
+                end
+            else
+                push!(lexemes, (word, VALUE))
+            end
+        end
+    end
+    return lexemes
+end
 
 function lex(tokens)
     lexemes = Tuple{String,LexemeType}[]
@@ -30,6 +101,12 @@ function lex(tokens)
         end
     end
     return lexemes
+end
+
+function update!(lx::Lexer, chars::Iterators.Stateful)
+    lx.prior_char, lx.char = lx.char, next(chars, '\n')
+    lx.index += 1
+    return lx
 end
 
 function isvalidname(name::AbstractString)
