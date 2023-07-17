@@ -26,5 +26,4 @@ unexpected errors or compatibility issues in your code.
 ```@docs
 tokenizestr!
 update!
-next
 ```
